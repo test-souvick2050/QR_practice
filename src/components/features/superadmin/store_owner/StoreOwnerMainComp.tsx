@@ -16,5 +16,4 @@ export default memo(StoreOwnerMainComp);
 // const StoreOwnerMainComp = () => {
 //   return <div>StoreOwnerMainComp</div>;
 // };
-
 // export default StoreOwnerMainComp;

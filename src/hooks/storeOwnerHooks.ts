@@ -48,9 +48,7 @@ const fetchAllOwners = async () => {
     .select(
       `
       id,
-      user:users (
-        *
-      )
+      user:users (*)  
     `
     )
     .order('created_at', { ascending: false });
@@ -106,112 +104,132 @@ export const useFetchSingleOwner = (ownerId?: string) => {
 };
 
 // * ====================== Create Store Owner ====================== *
-// export const createOwner = async (ownerData: CreateOwnerInput) => {
-//   const userProfile = useAuthStore.getState().userProfile;
-//   const {
-//     name,
-//     email,
-//     phone,
-//     status,
-//     address,
-//     street,
-//     city,
-//     state,
-//     state_code,
-//     country,
-//     country_code,
-//     zip,
-//     lat,
-//     lng,
-//   } = ownerData;
-//   const password = `Password@${new Date().getFullYear()}`;
-//   const uniqueId = generateRandomId();
+export const createOwner = async (ownerData: CreateOwnerInput) => {
+  const userProfile = useAuthStore.getState().userProfile;
+  console.log('userprofile++++++', userProfile);
+  const {
+    name,
+    email,
+    phone,
+    status,
+    address,
+    // street,
+    // city,
+    // state,
+    // state_code,
+    // country,
+    // country_code,
+    // zip,
+    // lat,
+    // lng,
+  } = ownerData;
+  const password = `Password@${new Date().getFullYear()}`;
+  const uniqueId = generateRandomId();
+  console.log('Generated Unique ID:', uniqueId);
 
-//   // Check if user with same email or phone number already exists
-//   const { data: existingUsers, error: fetchError } = await supabase
-//     .from('users')
-//     .select('id')
-//     .or(`email.eq.${email},phone.eq.${phone}`);
+  // Check if user with same email or phone number already exists
+  const { data: existingUsers, error: fetchError } = await supabase
+    .from('users')
+    .select('id')
+    .or(`email.eq.${email},phone.eq.${phone}`);
 
-//   if (fetchError) {
-//     throw fetchError;
-//   }
+  if (fetchError) {
+    throw fetchError;
+  }
 
-//   if (existingUsers && existingUsers.length > 0) {
-//     throw new Error('User with the same email or phone number already exists');
-//   }
+  if (existingUsers && existingUsers.length > 0) {
+    throw new Error('User with the same email or phone number already exists');
+  }
 
-//   // Create user in Supabase Auth
-//   const { data: authData, error: authError } = await supabase.auth.admin.createUser({
-//     email,
-//     phone,
-//     password,
-//     email_confirm: true,
-//     user_metadata: { display_name: name },
-//   });
+  // Create user in Supabase Auth
+  const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+    email,
+    phone,
+    password,
+    email_confirm: true,
+    user_metadata: { display_name: name },
+  });
 
-//   if (authError || !authData?.user) {
-//     throw authError || new Error('User creation failed');
-//   }
+  if (authError || !authData?.user) {
+    throw authError || new Error('User creation failed');
+  }
 
-//   const authUserId = authData.user.id;
+  const authUserId = authData.user.id;
 
-//   // Insert into users table
-//   const { error: dbError, data: insertedUserData } = await supabase
-//     .from('users')
-//     .insert({
-//       auth_user_id: authUserId,
-//       unique_id: uniqueId,
-//       name,
-//       email,
-//       phone,
-//       role: 'owner',
-//       status,
-//       address,
-//       street,
-//       city,
-//       state,
-//       state_code,
-//       country,
-//       country_code,
-//       zip,
-//       lat,
-//       lng,
-//       created_by_user_id: userProfile?.id,
-//       updated_by_user_id: userProfile?.id,
-//     })
-//     .select();
+  // Insert into users table
+  // const { error: dbError, data: insertedUserData } = await supabase
+  //   .from('users')
+  //   .insert({
+  //     auth_user_id: authUserId,
+  //     unique_id: uniqueId,
+  //     name,
+  //     email,
+  //     phone,
+  //     role: 'owner',
+  //     status,
+  //     address,
+  //     street,
+  //     city,
+  //     state,
+  //     state_code,
+  //     country,
+  //     country_code,
+  //     zip,
+  //     lat,
+  //     lng,
+  //     created_by_user_id: userProfile?.id,
+  //     updated_by_user_id: userProfile?.id,
+  //   })
+  //   .select();
 
-//   if (dbError || !insertedUserData?.length) {
-//     await supabase.auth.admin.deleteUser(authUserId); // rollback
-//     throw dbError || new Error('Failed to insert user record');
-//   }
+  const { error: dbError, data: insertedUserData } = await supabase
+    .from('users')
+    .insert({
+      auth_user_id: authUserId,
+      // unique_id: uniqueId,
+      name,
+      email,
+      phone,
+      role: 'owner',
+      status,
+      address,
+      created_by_user_id: userProfile?.id,
+      updated_by_user_id: userProfile?.id,
+    })
+    .select();
+  console.log('DB Error:+++', dbError);
 
-//   const insertedUserId = insertedUserData[0].id;
+  if (dbError || !insertedUserData?.length) {
+    await supabase.auth.admin.deleteUser(authUserId); // rollback
+    throw dbError || new Error('Failed to insert user record');
+  }
 
-//   // Insert into store_owners table
-//   const { error: storeOwnerError } = await supabase.from('store_owners').insert({
-//     user_id: insertedUserId,
-//   });
+  const insertedUserId = insertedUserData[0].id;
 
-//   if (storeOwnerError) {
-//     await supabase.auth.admin.deleteUser(authUserId); // rollback again
-//     throw storeOwnerError;
-//   }
+  // Insert into store_owners table
+  const { error: storeOwnerError } = await supabase.from('store_owners').insert({
+    user_id: insertedUserId,
+  });
+  console.log('Store Owner Error:+++', storeOwnerError);
 
-//   return { success: true, userId: authUserId };
-// };
+  if (storeOwnerError) {
+    await supabase.auth.admin.deleteUser(authUserId); // rollback again
+    throw storeOwnerError;
+  }
 
-// export const useCreateOwner = () => {
-//   const queryClient = useQueryClient();
+  return { success: true, userId: authUserId };
+};
 
-//   return useMutation({
-//     mutationFn: createOwner,
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({ queryKey: ['owners'], exact: false });
-//     },
-//   });
-// };
+export const useCreateOwner = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createOwner,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['owners'], exact: false });
+    },
+  });
+};
 
 // * ====================== Delete Store Owner ====================== *
 // export const deleteStoreOwner = async (userId: string) => {

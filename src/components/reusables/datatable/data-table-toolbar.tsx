@@ -127,16 +127,16 @@ const DataTableToolbar = <TData,>({
           {extraOptions?.showAddMarkupButton && <MarkUpComponent selectedRows={selectedRows} />}
 
           {showExportLeadButton && ExportLeadComponent && <ExportLeadComponent rows={rows} />}
-          {/* 
+
           <div className="flex flex-wrap gap-4 md:flex-nowrap">
-            {isVisibilityTogglable && <DataTableViewOptions table={table} />}
+            {/* {isVisibilityTogglable && <DataTableViewOptions table={table} />} */}
 
             {showCreateButton && creationOptions?.component && <creationOptions.component />}
 
             {extraOptions?.canGenerateAllQRCode && (
               <GenerateAllQRCodeComp selectedRows={selectedRows} />
             )}
-          </div> */}
+          </div>
         </div>
       </div>
 
