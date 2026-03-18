@@ -8,10 +8,11 @@ import { errorTransformer } from '@/utils/error';
 import Spinner from '@/components/reusables/Spinner';
 import { useFetchSingleOwner } from '@/hooks/storeOwnerHooks';
 import { Chip } from '@/components/reusables/dashboard/Chip';
-// import DeleteAction from './DeleteAction';
+import DeleteAction from './DeleteAction';
 // import UpdateAction from './UpdateAction';
 
 const ViewAction = ({ row, text }: { row: StoreOwner; text?: string }) => {
+  console.log('row+++', row);
   const { viewOptions } = actionMenuItems;
   const [open, setOpen] = useState(false);
   const handleModalOpen = () => {
@@ -25,6 +26,8 @@ const ViewAction = ({ row, text }: { row: StoreOwner; text?: string }) => {
     data: storeOwnerData,
     isLoading: isSingleFetchLoading,
   } = useFetchSingleOwner(row.id);
+
+  console.log('storeOwnerData++', storeOwnerData);
 
   return (
     <div>
@@ -47,8 +50,8 @@ const ViewAction = ({ row, text }: { row: StoreOwner; text?: string }) => {
       >
         <>
           <div className="absolute top-5 right-11 flex items-center justify-end gap-2 sm:top-3 sm:right-15">
-            {/* <DeleteAction row={row} />
-            <UpdateAction row={row} setParentOpen={setOpen} /> */}
+            <DeleteAction row={row} />
+            {/* <UpdateAction row={row} setParentOpen={setOpen} /> */}
           </div>
 
           {isSingleFetchLoading ? (

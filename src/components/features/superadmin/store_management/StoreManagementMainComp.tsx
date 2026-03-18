@@ -1,24 +1,24 @@
-import { Button } from '@/components/ui/button';
+// import { Button } from '@/components/ui/button';
+// import { Link } from 'react-router';
+// import { ArrowRight } from 'lucide-react';
 import StoreManagementDataTable from './StoreManagementDataTable';
-import { Link } from 'react-router';
-import { ArrowRight } from 'lucide-react';
 // import { useSyncProductVendors, useUpsertVendors } from '@/hooks/extraHooks';
 
 const StoreManagementMainComp = () => {
   // const { mutate: upsertVendorMutation } = useUpsertVendors();
   // const { mutate: syncProductVendorsMutation } = useSyncProductVendors();
 
-  const handleUpsertVendor = () => {
-    // upsertVendorMutation();
-  };
+  // const handleUpsertVendor = () => {
+  //   upsertVendorMutation();
+  // };
 
-  const handleSyncProductVendors = () => {
-    // syncProductVendorsMutation();
-  };
+  // const handleSyncProductVendors = () => {
+  //   syncProductVendorsMutation();
+  // };
 
   return (
     <>
-      <div className="mb-4 flex justify-end">
+      {/* <div className="mb-4 flex justify-end">
         <Button variant="link" className="mr-5 hidden font-bold" onClick={handleUpsertVendor}>
           Add Vendors
         </Button>
@@ -32,7 +32,7 @@ const StoreManagementMainComp = () => {
             All Manufacturers <ArrowRight />
           </Button>
         </Link>
-      </div>
+      </div> */}
 
       <div className="dashboard-content-wrap">
         <div className="d-full-card-wrap">

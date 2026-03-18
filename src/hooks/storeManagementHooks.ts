@@ -1,6 +1,6 @@
-// import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-// import { timeConverter } from "@/utils/time";
-// import supabase from "@/configs/supabse";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { timeConverter } from '@/utils/time';
+import supabase from '@/configs/supabse';
 // import useAuthStore from "@/store/authStore";
 
 // interface CreateStoreInput {
@@ -43,51 +43,51 @@
 // }
 
 // // * ====================== Fetch All Stores ====================== *
-// const fetchAllStores = async () => {
-//   const { data, error } = await supabase
-//     .from("store_locations")
-//     .select(
-//       `
-//        *,
-//         manufacturers (
-//          id, name
-//         ),
-//         store_owners (
-//           id, user_id,
-//           users (
-//             id, name
-//           )
-//         )
-//       `,
-//     )
-//     .order("created_at", { ascending: false });
+const fetchAllStores = async () => {
+  const { data, error } = await supabase
+    .from('store_locations')
+    .select(
+      `
+       *,
+        manufacturers (
+         id, name
+        ),
+        store_owners (
+          id, user_id,
+          users (
+            id, name
+          )
+        )
+      `
+    )
+    .order('created_at', { ascending: false });
 
-//   const result = data?.map((row) => {
-//     const { store_owners, manufacturers, ...storeData } = row;
-//     const store_owner = store_owners as any;
+  const result = data?.map((row) => {
+    const { store_owners, manufacturers, ...storeData } = row;
+    const store_owner = store_owners as any;
 
-//     return {
-//       ...storeData,
-//       manufacturers,
-//       store_owner: {
-//         id: store_owner?.id,
-//         user_id: store_owner?.user_id,
-//         name: store_owner?.users.name,
-//       },
-//     };
-//   });
+    return {
+      ...storeData,
+      manufacturers,
+      store_owner: {
+        id: store_owner?.id,
+        user_id: store_owner?.user_id,
+        name: store_owner?.users.name,
+      },
+    };
+  });
 
-//   if (error) throw error;
-//   return result;
-// };
+  if (error) throw error;
+  return result;
+};
 
-// export const useFetchAllStores = () => {
-//   return useQuery({
-//     queryKey: ["stores"],
-//     queryFn: fetchAllStores,
-//     staleTime: timeConverter(20, "minute"),
-//   });
-// };
+export const useFetchAllStores = () => {
+  return useQuery({
+    queryKey: ['stores'],
+    queryFn: fetchAllStores,
+    staleTime: timeConverter(20, 'minute'),
+  });
+};
 
 // // * ====================== Fetch Single Store ====================== *
 // const fetchSingleStore = async (storeId: string) => {
