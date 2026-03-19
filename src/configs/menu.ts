@@ -34,24 +34,24 @@ const superadminMenuItems = [
     icon: Store,
     roles: ['superadmin'],
   },
-  {
-    title: 'Alerts',
-    url: '/superadmin/alerts',
-    icon: BellRing,
-    roles: ['superadmin'],
-  },
+  // {
+  //   title: 'Alerts',
+  //   url: '/superadmin/alerts',
+  //   icon: BellRing,
+  //   roles: ['superadmin'],
+  // },
   {
     title: 'Genie Requests',
     url: '/superadmin/genie-requests',
     icon: Mails,
     roles: ['superadmin'],
   },
-  {
-    title: 'Uploaded Files',
-    url: '/superadmin/uploaded-files',
-    icon: FileStack,
-    roles: ['superadmin'],
-  },
+  // {
+  //   title: 'Uploaded Files',
+  //   url: '/superadmin/uploaded-files',
+  //   icon: FileStack,
+  //   roles: ['superadmin'],
+  // },
 ];
 
 // ? ============================= Store Owner Menus ============================= ?

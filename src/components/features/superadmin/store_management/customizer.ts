@@ -1,5 +1,5 @@
 import type { ActionMenuConfig } from '@/types/types';
-// import CreateAction from './CreateAction';
+import CreateAction from './CreateAction';
 import { Store } from 'lucide-react';
 
 const actionMenuItems: ActionMenuConfig = {
@@ -15,7 +15,7 @@ const actionMenuItems: ActionMenuConfig = {
   creationOptions: {
     title: 'Create Store',
     description: '',
-    // component: CreateAction,
+    component: CreateAction,
   },
   showDeleteButton: true,
   deleteConfirmationOptions: {

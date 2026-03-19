@@ -8,6 +8,7 @@ import { useFetchAllStores } from '@/hooks/storeManagementHooks';
 
 const StoreManagementDataTable = () => {
   const { data, isError, error } = useFetchAllStores();
+  console.log('data+++++', data);
   const content = data ?? [];
 
   useEffect(() => {
