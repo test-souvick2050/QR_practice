@@ -1,13 +1,13 @@
-import type { AuthSession, User } from "@supabase/supabase-js";
-import type { LucideIcon } from "lucide-react";
-import type React from "react";
-import type { ComponentType } from "react";
+import type { AuthSession, User } from '@supabase/supabase-js';
+import type { LucideIcon } from 'lucide-react';
+import type React from 'react';
+import type { ComponentType } from 'react';
 
 // ? ======================================================= ?
 // ? Theme Related
 // ? ======================================================= ?
 
-export type Theme = "dark" | "light" | "system";
+export type Theme = 'dark' | 'light' | 'system';
 
 export type ThemeProviderState = {
   theme: Theme;
@@ -75,8 +75,8 @@ export type UserProfile = {
   email: string;
   phone?: string;
   avatar_url?: string | null;
-  role: "superadmin" | "owner" | "manager" | "employee";
-  status: "active" | "inactive";
+  role: 'superadmin' | 'owner' | 'manager' | 'employee';
+  status: 'active' | 'inactive';
   address?: string;
   last_login_at?: string;
   created_at: string;
@@ -149,8 +149,8 @@ export interface StoreOwner {
   name: string;
   email: string;
   phone: string;
-  role: "owner";
-  status: "active" | "inactive";
+  role: 'owner';
+  status: 'active' | 'inactive';
   address?: string;
   street?: string;
   city?: string;
@@ -189,7 +189,7 @@ export interface UpdateStoreOwnerFormInitialValues {
   name: string;
   email: string;
   phone: string;
-  status?: "active" | "inactive";
+  status?: 'active' | 'inactive';
   address?: string;
   street?: string;
   city?: string;
@@ -217,7 +217,7 @@ export interface Manufacturer {
   sftp_port: number;
   sftp_location: string;
   sftp_username: string;
-  sftp_auth_type: "password" | "ssh_key";
+  sftp_auth_type: 'password' | 'ssh_key';
   sftp_password: string;
   sftp_password_iv?: string;
   sftp_ssh_key_file_url?: string;
@@ -236,7 +236,7 @@ export interface CreateManufacturerFormInitialValues {
   sftp_port: number | null;
   sftp_location: string;
   sftp_username: string;
-  sftp_auth_type: "password" | "ssh_key";
+  sftp_auth_type: 'password' | 'ssh_key';
   sftp_password: string;
   sftp_ssh_key_file: File | null;
   store_location_id: string;
@@ -249,7 +249,7 @@ export interface UpdateManufacturerFormInitialValues {
   sftp_port: number;
   sftp_location: string;
   sftp_username: string;
-  sftp_auth_type: "password" | "ssh_key";
+  sftp_auth_type: 'password' | 'ssh_key';
   sftp_password: string;
   sftp_ssh_key_file: File | null;
   store_location_id: string;
@@ -265,7 +265,7 @@ export interface StoreManagement {
   name: string;
   email: string;
   phone: string;
-  status: "active" | "inactive";
+  status: 'active' | 'inactive';
   store_location_count: number;
   subdomain: string;
   address?: string;
@@ -289,7 +289,7 @@ export interface StoreManagement {
 export interface StoreLocation {
   id: string;
   store_id: string;
-  status: "active" | "inactive";
+  status: 'active' | 'inactive';
   created_at: string;
   updated_at: string;
   deleted_at?: string;
@@ -302,7 +302,7 @@ export interface CreateStoreFormInitialValues {
   name: string;
   email: string;
   phone: string;
-  status: "active" | "inactive";
+  status: 'active' | 'inactive';
   subdomain: string;
   store_owner_id: string;
   address?: string;
@@ -321,7 +321,7 @@ export interface UpdateStoreFormInitialValues {
   name: string;
   email: string;
   phone: string;
-  status: "active" | "inactive";
+  status: 'active' | 'inactive';
   subdomain: string;
   store_owner_id: string;
   address?: string;
@@ -345,8 +345,8 @@ export interface EmployeeManagement {
   name: string;
   email: string;
   phone: string;
-  role: "manager" | "employee";
-  status: "active" | "inactive";
+  role: 'manager' | 'employee';
+  status: 'active' | 'inactive';
   created_at: string;
   updated_at: string;
   deleted_at?: string;
@@ -358,7 +358,7 @@ export interface EmployeeManagement {
 export interface StoreLocation {
   id: string;
   store_id: string;
-  status: "active" | "inactive";
+  status: 'active' | 'inactive';
   created_at: string;
   updated_at: string;
   deleted_at?: string;
@@ -371,7 +371,7 @@ export interface CreateEmployeeFormInitialValues {
   name: string;
   email: string;
   phone: string;
-  role: "manager" | "employee";
+  role: 'manager' | 'employee';
   store_location_id: string;
 }
 
@@ -379,8 +379,8 @@ export interface UpdateEmployeeFormInitialValues {
   name: string;
   email: string;
   phone: string;
-  status: "active" | "inactive";
-  role: "manager" | "employee";
+  status: 'active' | 'inactive';
+  role: 'manager' | 'employee';
   store_location_id: string;
 }
 
@@ -398,7 +398,7 @@ export interface UpdateEmployeeFormByManagerInitialValues {
   name: string;
   email: string;
   phone: string;
-  status: "active" | "inactive";
+  status: 'active' | 'inactive';
 }
 
 // ? ======================================================= ?
@@ -418,7 +418,7 @@ export interface ProductCatalog {
   color: string;
   uom: string;
   coverage: string;
-  status: "active" | "inactive";
+  status: 'active' | 'inactive';
   markup: number | null;
   created_at: string;
   updated_at: string;
@@ -473,13 +473,13 @@ export interface AddMarkupFormInitialValues {
 export interface CreateProductCategoryFormInitialValues {
   name: string;
   store_location_id: string;
-  status: "active" | "inactive";
+  status: 'active' | 'inactive';
 }
 
 export interface UpdateProductCategoryFormInitialValues {
   name: string;
   store_location_id: string;
-  status: "active" | "inactive";
+  status: 'active' | 'inactive';
 }
 
 // ? ======================================================= ?
@@ -489,13 +489,13 @@ export interface UpdateProductCategoryFormInitialValues {
 export interface CreateProductVendorFormInitialValues {
   name: string;
   store_location_id: string;
-  status: "active" | "inactive";
+  status: 'active' | 'inactive';
 }
 
 export interface UpdateProductVendorFormInitialValues {
   name: string;
   store_location_id: string;
-  status: "active" | "inactive";
+  status: 'active' | 'inactive';
 }
 
 // ? ======================================================= ?
@@ -505,13 +505,13 @@ export interface UpdateProductVendorFormInitialValues {
 export interface CreateProductTagFormInitialValues {
   name: string;
   store_location_id: string;
-  status: "active" | "inactive";
+  status: 'active' | 'inactive';
 }
 
 export interface UpdateProductTagFormInitialValues {
   name: string;
   store_location_id: string;
-  status: "active" | "inactive";
+  status: 'active' | 'inactive';
 }
 
 // ? ======================================================= ?
@@ -521,7 +521,7 @@ export interface UpdateProductTagFormInitialValues {
 export interface QRCodeGenertorSettingsFormInitialValues {
   store_location_id: string;
   margin_size: number;
-  error_correction_level: "L" | "M" | "Q" | "H";
+  error_correction_level: 'L' | 'M' | 'Q' | 'H';
 }
 
 // ? ======================================================= ?

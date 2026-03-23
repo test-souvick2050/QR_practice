@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { timeConverter } from '@/utils/time';
 import supabase from '@/configs/supabse';
-import useAuthStore from '@/store/authStore';
+import type { number } from 'yup';
+// import useAuthStore from '@/store/authStore';
 
 interface CreateStoreInput {
   name: string;
@@ -106,8 +107,12 @@ const fetchAllStores = async () => {
     )
     .order('created_at', { ascending: false });
 
+  console.log('data>>>>>>>>>>', data);
+
   const result = data?.map((row) => {
     const { store_owners, ...storeData } = row;
+    console.log('store owner+++', store_owners);
+
     const store_owner = store_owners as any;
 
     return {
@@ -133,54 +138,63 @@ export const useFetchAllStores = () => {
 };
 
 // // * ====================== Fetch Single Store ====================== *
-// const fetchSingleStore = async (storeId: string) => {
-//   const { data, error } = await supabase
-//     .from("store_locations")
-//     .select(
-//       `
-//         *,
-//         manufacturers (
-//          id, name
-//         ),
-//         store_owners (
-//           id, user_id,
-//           users (
-//             id, name
-//           )
-//         )
-//       `,
-//     )
-//     .eq("id", storeId)
-//     .maybeSingle();
+const fetchSingleStore = async (storeId: string) => {
+  const { data, error } = await supabase
+    .from('store_locations')
+    // .select(
+    //   `
+    //     *,
+    //     manufacturers (
+    //      id, name
+    //     ),
+    //     store_owners (
+    //       id, user_id,
+    //       users (
+    //         id, name
+    //       )
+    //     )
+    //   `
+    // )
+    .select(
+      `
+  *,
+  store_owners (
+    id, user_id,
+    users (id, name)
+  )
+`
+    )
+    .eq('id', storeId)
+    .maybeSingle();
 
-//   const { store_owners, ...storeData } = data as any;
+  const { store_owners, ...storeData } = data as any;
 
-//   const result = {
-//     ...storeData,
-//     store_owner: {
-//       id: store_owners?.id,
-//       user_id: store_owners?.user_id,
-//       name: store_owners?.users.name,
-//     },
-//   };
+  const result = {
+    ...storeData,
+    store_owner: {
+      id: store_owners?.id,
+      user_id: store_owners?.user_id,
+      name: store_owners?.users.name,
+    },
+  };
 
-//   if (error) throw error;
-//   return result as any;
-// };
+  if (error) throw error;
+  return result as any;
+};
 
-// export const useFetchSingleStore = (storeId?: string) => {
-//   return useQuery({
-//     queryKey: ["store", storeId],
-//     queryFn: () => fetchSingleStore(storeId!),
-//     enabled: !!storeId,
-//     staleTime: timeConverter(10, "minute"),
-//   });
-// };
+export const useFetchSingleStore = (storeId?: string) => {
+  return useQuery({
+    queryKey: ['store', storeId],
+    queryFn: () => fetchSingleStore(storeId!),
+    enabled: !!storeId,
+    staleTime: timeConverter(10, 'minute'),
+  });
+};
 
-// // * ====================== Create Store ====================== *
+// * ====================== Create Store ====================== *
 export const createStore = async (storeData: CreateStoreInput) => {
-  const userProfile = useAuthStore.getState().userProfile;
-  console.log('userProfile++++', userProfile);
+  // const userProfile = useAuthStore.getState().userProfile;
+  // console.log('userProfile++++', userProfile);
   const {
     name,
     email,
@@ -256,8 +270,8 @@ export const createStore = async (storeData: CreateStoreInput) => {
     store_location_id: insertedStoreId,
     name: category.name,
     status: 'active',
-    created_by_user_id: userProfile?.id,
-    updated_by_user_id: userProfile?.id,
+    // created_by_user_id: userProfile?.id,
+    // updated_by_user_id: userProfile?.id,
   }));
 
   const { error: categoriesInsertError } = await supabase
@@ -277,8 +291,8 @@ export const createStore = async (storeData: CreateStoreInput) => {
     store_location_id: insertedStoreId,
     name: tag.name,
     status: 'active',
-    created_by_user_id: userProfile?.id,
-    updated_by_user_id: userProfile?.id,
+    // created_by_user_id: userProfile?.id,
+    // updated_by_user_id: userProfile?.id,
   }));
 
   const { error: tagsInsertError } = await supabase.from('product_tags').insert(tagsToInsert);
@@ -296,8 +310,8 @@ export const createStore = async (storeData: CreateStoreInput) => {
     store_location_id: insertedStoreId,
     name: vendor.name,
     status: 'active',
-    created_by_user_id: userProfile?.id,
-    updated_by_user_id: userProfile?.id,
+    // created_by_user_id: userProfile?.id,
+    // updated_by_user_id: userProfile?.id,
   }));
 
   const { error: vendorsInsertError } = await supabase
@@ -353,6 +367,32 @@ export const useCreateStore = () => {
 //     },
 //   });
 // };
+
+// delete store
+// export const deleteStore = async (id: number) => {
+//   const { data, error } = await supabase.from(store_location).delete().eq('id'id);
+// };
+export const deleteStore = async (id: string | number) => {
+  const { data, error } = await supabase.from('store_locations').delete().eq('id', id);
+
+  if (error) {
+    console.log('error', error);
+    throw error;
+  }
+
+  return data;
+};
+export const useDeleteStore = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteStore,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['stores'] });
+      queryClient.invalidateQueries({ queryKey: ['unassigned-store-owners'] });
+    },
+  });
+};
 
 // // * ====================== Update Store ====================== *
 // export const updateStore = async (updateStoreInput: UpdateStoreInput) => {

@@ -1,23 +1,23 @@
 import { DataTableColumnHeader } from '@/components/reusables/datatable/data-table-column-header';
 import { capitalize, fullSubdomain } from '@/utils/strings';
 import type { ColumnDef } from '@tanstack/react-table';
-// import ViewAction from './ViewAction';
+import ViewAction from './ViewAction';
 import { Chip } from '@/components/reusables/dashboard/Chip';
 
 const columns: ColumnDef<any>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Store Name" />,
-    // cell: ({ row }) => (
-    //   <ViewAction row={row.original} text={row.getValue('name') ? row.getValue('name') : '----'} />
-    // ),
+    cell: ({ row }) => (
+      <ViewAction row={row.original} text={row.getValue('name') ? row.getValue('name') : '----'} />
+    ),
     enableSorting: true,
   },
   {
     accessorKey: 'email',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
     cell: ({ row }) => <div>{row.getValue('email') ? row.getValue('email') : '----'}</div>,
-    enableSorting: true,
+    enableSorting: false,
   },
   {
     id: 'Phone Number',
@@ -26,7 +26,7 @@ const columns: ColumnDef<any>[] = [
     cell: ({ row }) => (
       <div>{row.getValue('Phone Number') ? row.getValue('Phone Number') : '----'}</div>
     ),
-    enableSorting: true,
+    enableSorting: false,
   },
   {
     id: 'Owner name',
@@ -41,7 +41,7 @@ const columns: ColumnDef<any>[] = [
         )}
       </div>
     ),
-    enableSorting: true,
+    enableSorting: false,
   },
   {
     accessorKey: 'subdomain',
@@ -55,14 +55,14 @@ const columns: ColumnDef<any>[] = [
         )}
       </div>
     ),
-    enableSorting: true,
+    enableSorting: false,
   },
   {
     id: 'Address',
     accessorKey: 'address',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Address" />,
     cell: ({ row }) => <div>{row.getValue('Address') ? row.getValue('Address') : '----'}</div>,
-    enableSorting: true,
+    enableSorting: false,
   },
   {
     accessorKey: 'manufacturers',
@@ -106,7 +106,7 @@ const columns: ColumnDef<any>[] = [
         </div>
       );
     },
-    enableSorting: true,
+    enableSorting: false,
   },
   // {
   //   id: 'actions',
