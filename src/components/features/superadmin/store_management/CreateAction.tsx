@@ -16,7 +16,7 @@ import FormikSelect from '@/components/reusables/formik/FormikSelect';
 import FormikPhoneInput from '@/components/reusables/formik/FormikPhoneInput';
 import FormikAddressAutocomplete from '@/components/reusables/formik/FormikAddressAutocomplete';
 
-// create action
+// create store //
 const CreateAction = () => {
   const { creationOptions } = actionMenuItems;
   const [open, setOpen] = useState(false);
@@ -24,23 +24,18 @@ const CreateAction = () => {
   const handleModalOpen = () => {
     setOpen(true);
   };
-
-  // ? Active store owners fetching
   const {
     isError: isOwnerFetchError,
     error: ownerFetchError,
     data: activeStoreOwners,
     isLoading: isOwnerFetchLoading,
   } = useActiveStoreOwners();
-  console.log('activeStoreOwners', activeStoreOwners);
 
   const ownerOptions = activeStoreOwners?.map((owner) => ({
     label: owner.name,
     value: owner.store_owner_id.toString(),
   }));
-  console.log('ownerOptions+++', ownerOptions);
   const { mutate: createStoreMutation, isPending } = useCreateStore();
-
   const initialValues: CreateStoreFormInitialValues = {
     name: '',
     email: '',

@@ -11,20 +11,20 @@ import { useFetchSingleStore } from '@/hooks/storeManagementHooks';
 import { DetailList } from '@/components/reusables/dashboard/ModalList';
 import { fullSubdomain } from '@/utils/strings';
 import DeleteAction from './DeleteAction';
-// import UpdateAction from './UpdateAction';
+import UpdateAction from './UpdateAction';
 
-console.log('appmodel', AppModal);
+// console.log('appmodel', AppModal);
 
 const ViewAction = ({ row, text }: { row: StoreManagement; text?: string }) => {
   console.log('row++', row); //all data in paticular id
-  console.log('text++', text); //name
+  // console.log('text++', text); //name
   const [open, setOpen] = useState(false);
   const handleModalOpen = () => {
     setOpen(true);
   };
 
   const { viewOptions } = actionMenuItems;
-  console.log('viewOptions', viewOptions);
+  // console.log('viewOptions', viewOptions);
 
   // fetch the api---
   const {
@@ -34,6 +34,14 @@ const ViewAction = ({ row, text }: { row: StoreManagement; text?: string }) => {
     isLoading: isSingleFetchLoading,
   } = useFetchSingleStore(row.id);
 
+  //   const {
+  //   isError: isSingleFetchError,
+  //   error: singleFetchError,
+  //   data: storeData,
+  //   isLoading: isSingleFetchLoading,
+  // } = useFetchSingleStore(row.id);
+
+  // view the store detais......
   const StoreDetails = [
     { label: 'Store Name:', value: storeData?.name ? storeData.name : '----' },
     { label: 'Email Address:', value: storeData?.email ? storeData.email : '----' },
@@ -121,6 +129,7 @@ const ViewAction = ({ row, text }: { row: StoreManagement; text?: string }) => {
           <div className="absolute top-5 right-11 flex items-center justify-end gap-2 sm:top-3 sm:right-15">
             <DeleteAction row={row} />
             {/* <UpdateAction row={row} setParentOpen={setOpen} /> */}
+            <UpdateAction />
           </div>
 
           {isSingleFetchLoading ? (

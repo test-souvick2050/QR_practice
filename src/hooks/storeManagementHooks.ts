@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { timeConverter } from '@/utils/time';
 import supabase from '@/configs/supabse';
-import type { number } from 'yup';
-// import useAuthStore from '@/store/authStore';
+// import type { number } from 'yup';
+import useAuthStore from '@/store/authStore';
 
 interface CreateStoreInput {
   name: string;
@@ -107,11 +107,8 @@ const fetchAllStores = async () => {
     )
     .order('created_at', { ascending: false });
 
-  console.log('data>>>>>>>>>>', data);
-
   const result = data?.map((row) => {
     const { store_owners, ...storeData } = row;
-    console.log('store owner+++', store_owners);
 
     const store_owner = store_owners as any;
 
@@ -192,9 +189,158 @@ export const useFetchSingleStore = (storeId?: string) => {
 };
 
 // * ====================== Create Store ====================== *
+// export const createStore = async (storeData: CreateStoreInput) => {
+//   // const userProfile = useAuthStore.getState().userProfile;
+//   // console.log('userProfile++++', userProfile);
+//   const {
+//     name,
+//     email,
+//     phone,
+//     status,
+//     subdomain,
+//     store_owner_id,
+//     address,
+//     street,
+//     city,
+//     state,
+//     country,
+//     zip,
+//     lat,
+//     lng,
+//     state_code,
+//     country_code,
+//   } = storeData;
+
+//   // Check if store with same email or phone number already exists
+//   // const { data: existingStores, error: fetchError } = await supabase
+//   //   .from('store_locations')
+//   //   .select('id')
+//   //   .or(`email.eq.${email},phone.eq.${phone}`);
+
+//   // if (fetchError) {
+//   //   throw fetchError;
+//   // }
+
+//   // if (existingStores && existingStores.length > 0) {
+//   //   throw new Error('Store with the same email or phone number already exists');
+//   // }
+
+//   // Insert into store locations table
+//   const { error: dbError, data: insertedStoreData } = await supabase
+//     .from('store_locations')
+//     .insert({
+//       store_owner_id,
+//       name,
+//       email,
+//       phone,
+//       status,
+//       subdomain,
+//       address,
+//       street,
+//       city,
+//       state,
+//       country,
+//       zip,
+//       lat,
+//       lng,
+//       state_code,
+//       country_code,
+//       // created_by_user_id: userProfile?.id,
+//       // updated_by_user_id: userProfile?.id,
+//     })
+//     .select();
+
+//   if (dbError || !insertedStoreData?.length) {
+//     throw dbError || new Error('Failed to insert Store');
+//   }
+
+//   const insertedStoreId = insertedStoreData[0]?.id;
+
+//   // Copy the master_categories to the product_categories table for the new store
+//   const { data: masterCategories, error: masterCategoriesError } = await supabase
+//     .from('master_categories')
+//     .select('id, name');
+
+//   if (masterCategoriesError) throw masterCategoriesError;
+
+//   const categoriesToInsert = masterCategories?.map((category) => ({
+//     store_location_id: insertedStoreId,
+//     name: category.name,
+//     status: 'active',
+//     // created_by_user_id: userProfile?.id,
+//     // updated_by_user_id: userProfile?.id,
+//   }));
+
+//   const { error: categoriesInsertError } = await supabase
+//     .from('product_categories')
+//     .insert(categoriesToInsert);
+
+//   if (categoriesInsertError) throw categoriesInsertError;
+
+//   // Copy the master_tags to the product_tags table for the new store
+//   const { data: masterTags, error: masterTagsError } = await supabase
+//     .from('master_tags')
+//     .select('id, name');
+
+//   if (masterTagsError) throw masterTagsError;
+
+//   const tagsToInsert = masterTags?.map((tag) => ({
+//     store_location_id: insertedStoreId,
+//     name: tag.name,
+//     status: 'active',
+//     // created_by_user_id: userProfile?.id,
+//     // updated_by_user_id: userProfile?.id,
+//   }));
+
+//   const { error: tagsInsertError } = await supabase.from('product_tags').insert(tagsToInsert);
+
+//   if (tagsInsertError) throw tagsInsertError;
+
+//   // Copy the master_vendors to the product_vendors table for the new store
+//   const { data: masterVendors, error: masterVendorsError } = await supabase
+//     .from('master_vendors')
+//     .select('id, name');
+
+//   if (masterVendorsError) throw masterVendorsError;
+
+//   const vendorsToInsert = masterVendors?.map((vendor) => ({
+//     store_location_id: insertedStoreId,
+//     name: vendor.name,
+//     status: 'active',
+//     // created_by_user_id: userProfile?.id,
+//     // updated_by_user_id: userProfile?.id,
+//   }));
+
+//   const { error: vendorsInsertError } = await supabase
+//     .from('product_vendors')
+//     .insert(vendorsToInsert);
+
+//   if (vendorsInsertError) throw vendorsInsertError;
+
+//   return { success: true, storeId: insertedStoreId };
+// };
+
+// export const useCreateStore = () => {
+//   const queryClient = useQueryClient();
+
+//   return useMutation({
+//     mutationFn: createStore,
+//     onSuccess: () => {
+//       queryClient.invalidateQueries({ queryKey: ['stores'], exact: false });
+//       queryClient.invalidateQueries({
+//         queryKey: ['unassigned-store-owners'],
+//         exact: false,
+//       });
+//     },
+//   });
+// };
+
+//create store
 export const createStore = async (storeData: CreateStoreInput) => {
-  // const userProfile = useAuthStore.getState().userProfile;
-  // console.log('userProfile++++', userProfile);
+  const userProfile = useAuthStore.getState().userProfile;
+  console.log('userprofile+++', userProfile);
+  console.log('storeData++', storeData);
+
   const {
     name,
     email,
@@ -215,18 +361,18 @@ export const createStore = async (storeData: CreateStoreInput) => {
   } = storeData;
 
   // Check if store with same email or phone number already exists
-  // const { data: existingStores, error: fetchError } = await supabase
-  //   .from('store_locations')
-  //   .select('id')
-  //   .or(`email.eq.${email},phone.eq.${phone}`);
+  const { data: existingStores, error: fetchError } = await supabase
+    .from('store_locations')
+    .select('id')
+    .or(`email.eq.${email},phone.eq.${phone}`);
 
-  // if (fetchError) {
-  //   throw fetchError;
-  // }
+  if (fetchError) {
+    throw fetchError;
+  }
 
-  // if (existingStores && existingStores.length > 0) {
-  //   throw new Error('Store with the same email or phone number already exists');
-  // }
+  if (existingStores && existingStores.length > 0) {
+    throw new Error('Store with the same email or phone number already exists');
+  }
 
   // Insert into store locations table
   const { error: dbError, data: insertedStoreData } = await supabase
@@ -259,66 +405,7 @@ export const createStore = async (storeData: CreateStoreInput) => {
 
   const insertedStoreId = insertedStoreData[0]?.id;
 
-  // Copy the master_categories to the product_categories table for the new store
-  const { data: masterCategories, error: masterCategoriesError } = await supabase
-    .from('master_categories')
-    .select('id, name');
-
-  if (masterCategoriesError) throw masterCategoriesError;
-
-  const categoriesToInsert = masterCategories?.map((category) => ({
-    store_location_id: insertedStoreId,
-    name: category.name,
-    status: 'active',
-    // created_by_user_id: userProfile?.id,
-    // updated_by_user_id: userProfile?.id,
-  }));
-
-  const { error: categoriesInsertError } = await supabase
-    .from('product_categories')
-    .insert(categoriesToInsert);
-
-  if (categoriesInsertError) throw categoriesInsertError;
-
-  // Copy the master_tags to the product_tags table for the new store
-  const { data: masterTags, error: masterTagsError } = await supabase
-    .from('master_tags')
-    .select('id, name');
-
-  if (masterTagsError) throw masterTagsError;
-
-  const tagsToInsert = masterTags?.map((tag) => ({
-    store_location_id: insertedStoreId,
-    name: tag.name,
-    status: 'active',
-    // created_by_user_id: userProfile?.id,
-    // updated_by_user_id: userProfile?.id,
-  }));
-
-  const { error: tagsInsertError } = await supabase.from('product_tags').insert(tagsToInsert);
-
-  if (tagsInsertError) throw tagsInsertError;
-
-  // Copy the master_vendors to the product_vendors table for the new store
-  const { data: masterVendors, error: masterVendorsError } = await supabase
-    .from('master_vendors')
-    .select('id, name');
-
-  if (masterVendorsError) throw masterVendorsError;
-
-  const vendorsToInsert = masterVendors?.map((vendor) => ({
-    store_location_id: insertedStoreId,
-    name: vendor.name,
-    status: 'active',
-    // created_by_user_id: userProfile?.id,
-    // updated_by_user_id: userProfile?.id,
-  }));
-
-  const { error: vendorsInsertError } = await supabase
-    .from('product_vendors')
-    .insert(vendorsToInsert);
-
-  if (vendorsInsertError) throw vendorsInsertError;
+  console.log('insertedStoreId', insertedStoreId);
 
   return { success: true, storeId: insertedStoreId };
 };
@@ -330,10 +417,7 @@ export const useCreateStore = () => {
     mutationFn: createStore,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['stores'], exact: false });
-      queryClient.invalidateQueries({
-        queryKey: ['unassigned-store-owners'],
-        exact: false,
-      });
+      queryClient.invalidateQueries({ queryKey: ['unassigned-store-owners'], exact: false });
     },
   });
 };
@@ -368,10 +452,7 @@ export const useCreateStore = () => {
 //   });
 // };
 
-// delete store
-// export const deleteStore = async (id: number) => {
-//   const { data, error } = await supabase.from(store_location).delete().eq('id'id);
-// };
+// DELETE STORE
 export const deleteStore = async (id: string | number) => {
   const { data, error } = await supabase.from('store_locations').delete().eq('id', id);
 
@@ -384,12 +465,13 @@ export const deleteStore = async (id: string | number) => {
 };
 export const useDeleteStore = () => {
   const queryClient = useQueryClient();
+  console.log('queryClient', queryClient);
 
   return useMutation({
     mutationFn: deleteStore,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['stores'] });
-      queryClient.invalidateQueries({ queryKey: ['unassigned-store-owners'] });
+      // queryClient.invalidateQueries({ queryKey: ['unassigned-store-owners'] });
     },
   });
 };

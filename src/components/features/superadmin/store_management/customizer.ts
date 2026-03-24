@@ -14,13 +14,13 @@ const actionMenuItems: ActionMenuConfig = {
   showCreateButton: true,
   creationOptions: {
     title: 'Create Store',
-    description: '',
+    // description: '',
     component: CreateAction,
   },
   showDeleteButton: true,
   deleteConfirmationOptions: {
     title: 'Are you sure you want to delete this Store?',
-    description: 'This action cannot be undone.',
+    // description: 'This action cannot be undone.',
     confirmLabel: 'Yes, delete',
   },
   showEditButton: true,

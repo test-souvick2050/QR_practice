@@ -9,7 +9,7 @@ import Spinner from '@/components/reusables/Spinner';
 import { useFetchSingleOwner } from '@/hooks/storeOwnerHooks';
 import { Chip } from '@/components/reusables/dashboard/Chip';
 import DeleteAction from './DeleteAction';
-// import UpdateAction from './UpdateAction';
+import UpdateAction from './UpdateAction';
 
 const ViewAction = ({ row, text }: { row: StoreOwner; text?: string }) => {
   console.log('row+++', row);
@@ -52,6 +52,7 @@ const ViewAction = ({ row, text }: { row: StoreOwner; text?: string }) => {
           <div className="absolute top-5 right-11 flex items-center justify-end gap-2 sm:top-3 sm:right-15">
             <DeleteAction row={row} />
             {/* <UpdateAction row={row} setParentOpen={setOpen} /> */}
+            <UpdateAction />
           </div>
 
           {isSingleFetchLoading ? (
