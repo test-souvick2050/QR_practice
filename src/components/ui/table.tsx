@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+// cn use for no conflict
 
 function Table({ className, ...props }: React.ComponentProps<'table'>) {
   return (

@@ -22,23 +22,23 @@ interface CreateOwnerInput {
   lng: string;
 }
 
-// interface UpdateOwnerInput {
-//   userId: string;
-//   name: string;
-//   email: string;
-//   phone: string;
-//   status: 'active' | 'inactive';
-//   address: string;
-//   street: string;
-//   city: string;
-//   state: string;
-//   state_code: string;
-//   country: string;
-//   country_code: string;
-//   zip: string;
-//   lat: string;
-//   lng: string;
-// }
+interface UpdateOwnerInput {
+  userId: string;
+  name: string;
+  email: string;
+  phone: string;
+  status: 'active' | 'inactive';
+  address: string;
+  street: string;
+  city: string;
+  state: string;
+  state_code: string;
+  country: string;
+  country_code: string;
+  zip: string;
+  lat: string;
+  lng: string;
+}
 
 // * ====================== Fetch All Store Owners ====================== *
 const fetchAllOwners = async () => {
@@ -280,136 +280,82 @@ export const useDeleteStoreOwner = () => {
   });
 };
 
-// * ====================== Update Store Owner ====================== *
-// export const updateOwner = async (updateInputData: UpdateOwnerInput) => {
-//   const {
-//     userId,
-//     name,
-//     email,
-//     phone,
-//     status,
-//     address,
-//     street,
-//     city,
-//     state,
-//     state_code,
-//     country,
-//     country_code,
-//     zip,
-//     lat,
-//     lng,
-//   } = updateInputData;
+// UPDATE STORE OWNER ID
+export const updateOwner = async (updateInputData: UpdateOwnerInput) => {
+  const {
+    userId,
+    name,
+    email,
+    phone,
+    status,
+    address,
+    street,
+    city,
+    state,
+    state_code,
+    country,
+    country_code,
+    zip,
+    lat,
+    lng,
+  } = updateInputData;
 
-//   const userProfile = useAuthStore.getState().userProfile;
+  console.log('updateInputData++++', updateInputData);
 
-//   // Optional: check for duplicates if email/phone changed (excluding self)
-//   const { data: existingUsers, error: checkError } = await supabase
-//     .from('users')
-//     .select('id')
-//     .or(`email.eq.${email},phone.eq.${phone}`)
-//     .neq('id', userId);
+  const { data: storeOwnerUpadteData, error: fetchStoreOwnerError } = await supabase
+    .from('users')
+    .select('auth_user_id')
+    .eq('role', 'owner')
+    .eq('id', userId)
+    .maybeSingle();
 
-//   if (checkError) throw checkError;
-//   if (existingUsers?.length) {
-//     throw new Error('Store owner with this email or phone number already exists');
-//   }
+  if (fetchStoreOwnerError) throw fetchStoreOwnerError;
+  const auth_user_id = storeOwnerUpadteData?.auth_user_id;
 
-//   const { data: storeOwner, error: fetchStoreOwnerError } = await supabase
-//     .from('users')
-//     .select('auth_user_id')
-//     .eq('role', 'owner')
-//     .eq('id', userId)
-//     .maybeSingle();
+  const { error: authError } = await supabase.auth.admin.updateUserById(auth_user_id, {
+    email,
+    phone,
+    user_metadata: {
+      display_name: name,
+    },
+  });
+  if (authError) throw authError;
 
-//   if (!storeOwner) throw new Error('Store owner not found');
+  const { error: dbError } = await supabase
+    .from('users')
+    .update({
+      name,
+      email,
+      phone,
+      status,
+      address,
+      street,
+      city,
+      state,
+      state_code,
+      country,
+      country_code,
+      zip,
+      lat,
+      lng,
+      // updated_by_user_id: userProfile?.id,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', userId);
 
-//   if (status === 'inactive') {
-//     const storeLocationIds =
-//       (storeOwner as any)?.store_owner?.[0]?.store_location?.map((location: any) => location.id) ||
-//       [];
+  if (dbError) throw dbError;
 
-//     const userIds =
-//       (storeOwner as any)?.store_owner?.[0]?.store_location?.flatMap(
-//         (location: any) => location.store_employees?.map((employee: any) => employee.user_id) || []
-//       ) || [];
+  return { success: true };
+};
 
-//     if (userIds && userIds.length > 0) {
-//       const { error: updateUsersError } = await supabase
-//         .from('users')
-//         .update({
-//           status,
-//           updated_by_user_id: userProfile?.id,
-//           updated_at: new Date().toISOString(),
-//         })
-//         .in('id', userIds);
+export const useUpdateOwner = () => {
+  const queryClient = useQueryClient();
 
-//       if (updateUsersError) throw updateUsersError;
-//     }
-
-//     if (storeLocationIds && storeLocationIds.length > 0) {
-//       const { error: updateLocationsError } = await supabase
-//         .from('store_locations')
-//         .update({
-//           status,
-//           updated_by_user_id: userProfile?.id,
-//           updated_at: new Date().toISOString(),
-//         })
-//         .in('id', storeLocationIds);
-
-//       if (updateLocationsError) throw updateLocationsError;
-//     }
-//   }
-
-//   if (fetchStoreOwnerError) throw fetchStoreOwnerError;
-
-//   const auth_user_id = storeOwner?.auth_user_id;
-
-//   // Update Supabase Auth email & metadata
-//   const { error: authError } = await supabase.auth.admin.updateUserById(auth_user_id, {
-//     email,
-//     phone,
-//     user_metadata: {
-//       display_name: name,
-//     },
-//   });
-//   if (authError) throw authError;
-
-//   // Update in users table
-//   const { error: dbError } = await supabase
-//     .from('users')
-//     .update({
-//       name,
-//       email,
-//       phone,
-//       status,
-//       address,
-//       street,
-//       city,
-//       state,
-//       state_code,
-//       country,
-//       country_code,
-//       zip,
-//       lat,
-//       lng,
-//       updated_by_user_id: userProfile?.id,
-//       updated_at: new Date().toISOString(),
-//     })
-//     .eq('id', userId);
-
-//   if (dbError) throw dbError;
-
-//   return { success: true };
-// };
-
-// export const useUpdateOwner = () => {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: updateOwner,
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({ queryKey: ['owners'], exact: false });
-//       queryClient.invalidateQueries({ queryKey: ['owner'], exact: false });
-//     },
-//   });
-// };
+  return useMutation({
+    mutationFn: updateOwner,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['owners'], exact: false });
+      queryClient.invalidateQueries({ queryKey: ['owner'], exact: false });
+    },
+  });
+};

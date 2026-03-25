@@ -18,6 +18,7 @@ const CreateAction = () => {
   const { creationOptions } = actionMenuItems;
   const [open, setOpen] = useState(false);
 
+  // open the app model.
   const handleModalOpen = () => {
     setOpen(true);
   };

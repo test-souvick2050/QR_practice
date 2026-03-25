@@ -34,6 +34,8 @@ const ViewAction = ({ row, text }: { row: StoreManagement; text?: string }) => {
     isLoading: isSingleFetchLoading,
   } = useFetchSingleStore(row.id);
 
+  // console.log('storeData>>>>', storeData);
+
   //   const {
   //   isError: isSingleFetchError,
   //   error: singleFetchError,
@@ -128,8 +130,8 @@ const ViewAction = ({ row, text }: { row: StoreManagement; text?: string }) => {
         <>
           <div className="absolute top-5 right-11 flex items-center justify-end gap-2 sm:top-3 sm:right-15">
             <DeleteAction row={row} />
-            {/* <UpdateAction row={row} setParentOpen={setOpen} /> */}
-            <UpdateAction />
+            <UpdateAction row={row} setParentOpen={setOpen} />
+            {/* <UpdateAction /> */}
           </div>
 
           {isSingleFetchLoading ? (

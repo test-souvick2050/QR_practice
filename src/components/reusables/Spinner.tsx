@@ -1,4 +1,4 @@
-import { cx } from "class-variance-authority";
+import { cx } from 'class-variance-authority';
 
 const Spinner = ({ classes }: { classes?: string }) => {
   return (
@@ -6,8 +6,8 @@ const Spinner = ({ classes }: { classes?: string }) => {
       <svg
         aria-hidden="true"
         className={cx(
-          "fill-primary inline h-8 w-8 animate-spin text-gray-200 dark:text-gray-600",
-          classes,
+          'fill-primary inline h-8 w-8 animate-spin text-gray-200 dark:text-gray-600',
+          classes
         )}
         viewBox="0 0 100 101"
         fill="none"

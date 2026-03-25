@@ -1,23 +1,20 @@
-import FullPageSpinner from "@/components/reusables/FullPageSpinner";
-import supabase from "@/configs/supabse";
-import { useFetchUserProfile } from "@/hooks/profileHooks";
-import useAuthStore from "@/store/authStore";
-import type React from "react";
-import { useEffect } from "react";
+import FullPageSpinner from '@/components/reusables/FullPageSpinner';
+import supabase from '@/configs/supabse';
+import { useFetchUserProfile } from '@/hooks/profileHooks';
+import useAuthStore from '@/store/authStore';
+import type React from 'react';
+import { useEffect } from 'react';
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const setUser = useAuthStore((state) => state.setUser);
   const setSession = useAuthStore((state) => state.setSession);
   const setUserProfile = useAuthStore((state) => state.setUserProfile);
   const isAuthInitialized = useAuthStore((state) => state.isAuthInitialized);
-  const setIsAuthInitialized = useAuthStore(
-    (state) => state.setIsAuthInitialized,
-  );
+  const setIsAuthInitialized = useAuthStore((state) => state.setIsAuthInitialized);
   const user = useAuthStore((state) => state.user);
 
   // Fetch user profile when authenticated
-  const { data: userProfile, isLoading: isProfileLoading } =
-    useFetchUserProfile();
+  const { data: userProfile, isLoading: isProfileLoading } = useFetchUserProfile();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
