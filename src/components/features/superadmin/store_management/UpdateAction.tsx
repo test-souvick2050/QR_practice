@@ -198,7 +198,7 @@
 
 // export default UpdateAction;
 
-// upadte store
+// UPDATE STORE.
 import { Button } from '@/components/ui/button';
 import type { StoreManagement, UpdateStoreFormInitialValues } from '@/types/types';
 import { PencilLine } from 'lucide-react';
@@ -235,6 +235,8 @@ const UpdateAction = ({ row, setParentOpen }: { row: StoreManagement; setParentO
     data: storeData,
     isLoading: isSingleFetchLoading,
   } = useFetchSingleStore(row.id);
+
+  console.log('storeData+++', storeData);
 
   // ACTIVE VENDOR
   const {

@@ -9,13 +9,3 @@ const StoreManagementPage = () => {
 };
 
 export default StoreManagementPage;
-
-// const StoreManagementPage = () => {
-//   return <p>StoreManagementPage</p>;
-// };
-
-// export default StoreManagementPage;
-
-//1) first set the router
-//2) set the commponent
-//3)

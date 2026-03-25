@@ -16,7 +16,6 @@ import UpdateAction from './UpdateAction';
 // console.log('appmodel', AppModal);
 
 const ViewAction = ({ row, text }: { row: StoreManagement; text?: string }) => {
-  console.log('row++', row); //all data in paticular id
   // console.log('text++', text); //name
   const [open, setOpen] = useState(false);
   const handleModalOpen = () => {
