@@ -17,7 +17,7 @@ import FormikAddressAutocomplete from '@/components/reusables/formik/FormikAddre
 import FormikPhoneInput from '@/components/reusables/formik/FormikPhoneInput';
 
 const UpdateAction = ({ row, setParentOpen }: { row: StoreOwner; setParentOpen: any }) => {
-  console.log('ROW-------', row);
+  // console.log('ROW-------', row);
   const { updateOptions } = actionMenuItems;
   const [open, setOpen] = useState(false);
   const handleModalOpen = () => {

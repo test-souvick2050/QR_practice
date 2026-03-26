@@ -9,7 +9,7 @@ import { useFetchAllOwners } from '@/hooks/storeOwnerHooks';
 const StoreOwnersDataTable = () => {
   const { data, isError, error } = useFetchAllOwners();
   const content = data ?? [];
-  console.log('content+++++', content);
+  // console.log('content+++++', content);
 
   useEffect(() => {
     if (isError) {

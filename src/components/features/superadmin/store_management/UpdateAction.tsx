@@ -236,7 +236,7 @@ const UpdateAction = ({ row, setParentOpen }: { row: StoreManagement; setParentO
     isLoading: isSingleFetchLoading,
   } = useFetchSingleStore(row.id);
 
-  console.log('storeData+++', storeData);
+  // console.log('storeData+++', storeData);
 
   // ACTIVE VENDOR
   const {
@@ -245,7 +245,7 @@ const UpdateAction = ({ row, setParentOpen }: { row: StoreManagement; setParentO
     data: activeStoreOwners,
     isLoading: isOwnerFetchLoading,
   } = useActiveStoreOwners();
-  console.log('activeStoreOwners+++', activeStoreOwners);
+  // console.log('activeStoreOwners+++', activeStoreOwners);
 
   const ownerOptions = activeStoreOwners?.map((owner) => ({
     label: owner.name,

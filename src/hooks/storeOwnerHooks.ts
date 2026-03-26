@@ -105,8 +105,8 @@ export const useFetchSingleOwner = (ownerId?: string) => {
 
 // * ====================== Create Store Owner ====================== *
 export const createOwner = async (ownerData: CreateOwnerInput) => {
-  const userProfile = useAuthStore.getState().userProfile;
-  console.log('userprofile++++++', userProfile);
+  // const userProfile = useAuthStore.getState().userProfile;
+  // console.log('userprofile++++++', userProfile);
   const {
     name,
     email,
@@ -125,7 +125,7 @@ export const createOwner = async (ownerData: CreateOwnerInput) => {
   } = ownerData;
   const password = `Password@${new Date().getFullYear()}`;
   const uniqueId = generateRandomId();
-  console.log('Generated Unique ID:', uniqueId);
+  // console.log('Generated Unique ID:', uniqueId);
 
   // Check if user with same email or phone number already exists
   const { data: existingUsers, error: fetchError } = await supabase
@@ -210,7 +210,7 @@ export const createOwner = async (ownerData: CreateOwnerInput) => {
   const { error: storeOwnerError } = await supabase.from('store_owners').insert({
     user_id: insertedUserId,
   });
-  console.log('Store Owner Error:+++', storeOwnerError);
+  // console.log('Store Owner Error:+++', storeOwnerError);
 
   if (storeOwnerError) {
     await supabase.auth.admin.deleteUser(authUserId); // rollback again
@@ -300,7 +300,7 @@ export const updateOwner = async (updateInputData: UpdateOwnerInput) => {
     lng,
   } = updateInputData;
 
-  console.log('updateInputData++++', updateInputData);
+  // console.log('updateInputData++++', updateInputData);
 
   const { data: storeOwnerUpadteData, error: fetchStoreOwnerError } = await supabase
     .from('users')

@@ -1,9 +1,9 @@
-import { ErrorMessage, type FieldProps, FastField, Field } from "formik";
-import { Input } from "../../ui/input";
-import { cn } from "@/lib/utils";
-import { Label } from "../../ui/label";
-import { Eye, EyeOff } from "lucide-react";
-import React, { memo, useState, type ReactNode } from "react";
+import { ErrorMessage, type FieldProps, FastField, Field } from 'formik';
+import { Input } from '../../ui/input';
+import { cn } from '@/lib/utils';
+import { Label } from '../../ui/label';
+import { Eye, EyeOff } from 'lucide-react';
+import React, { memo, useState, type ReactNode } from 'react';
 
 interface FormikInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
@@ -14,7 +14,7 @@ interface FormikInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 const FormikInput = ({
   name,
   label,
-  type = "text",
+  type = 'text',
   placeholder,
   className,
   required,
@@ -22,9 +22,9 @@ const FormikInput = ({
   disabled = false,
 }: FormikInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
-  const isPasswordType = type === "password";
+  const isPasswordType = type === 'password';
 
-  const inputType = showPassword && isPasswordType ? "text" : type;
+  const inputType = showPassword && isPasswordType ? 'text' : type;
 
   return (
     <div className="tw-input-wrap mb-4 grid w-full items-center">
@@ -41,7 +41,7 @@ const FormikInput = ({
                 id={name}
                 type={inputType}
                 placeholder={placeholder}
-                className={cn("text-foreground pr-10", className)} // leave space for the icon
+                className={cn('text-foreground pr-10', className)} // leave space for the icon
                 disabled={disabled}
               />
             )}
@@ -54,7 +54,7 @@ const FormikInput = ({
                 id={name}
                 type={inputType}
                 placeholder={placeholder}
-                className={cn("text-foreground pr-10", className)} // leave space for the icon
+                className={cn('text-foreground pr-10', className)} // leave space for the icon
                 disabled={disabled}
               />
             )}
@@ -77,11 +77,7 @@ const FormikInput = ({
         )}
       </div>
 
-      <ErrorMessage
-        name={name}
-        component="p"
-        className="mt-1 text-sm text-red-500"
-      />
+      <ErrorMessage name={name} component="p" className="mt-1 text-sm text-red-500" />
     </div>
   );
 };

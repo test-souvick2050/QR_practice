@@ -129,9 +129,7 @@ export const useFetchSingleStore = (storeId?: string) => {
 
 //CREATE STORE.
 export const createStore = async (storeData: CreateStoreInput) => {
-  const userProfile = useAuthStore.getState().userProfile;
-  console.log('userprofile+++', userProfile);
-  console.log('storeData++', storeData);
+  // const userProfile = useAuthStore.getState().userProfile;
   const {
     name,
     email,
@@ -194,7 +192,7 @@ export const createStore = async (storeData: CreateStoreInput) => {
 
   const insertedStoreId = insertedStoreData[0]?.id;
 
-  console.log('insertedStoreId', insertedStoreId);
+  // console.log('insertedStoreId', insertedStoreId);
 
   return { success: true, storeId: insertedStoreId };
 };
@@ -224,7 +222,7 @@ export const deleteStore = async (id: string | number) => {
 };
 export const useDeleteStore = () => {
   const queryClient = useQueryClient();
-  console.log('queryClient', queryClient);
+  // console.log('queryClient', queryClient);
 
   return useMutation({
     mutationFn: deleteStore,
@@ -257,8 +255,6 @@ export const updateStore = async (updateStoreInput: UpdateStoreInput) => {
     country_code,
   } = updateStoreInput;
 
-  const userProfile = useAuthStore.getState().userProfile;
-
   // Getting store owner data
   if (!store_owner_id) throw new Error('Store owner not found');
   const { data: storeOwnerData, error: storeOwnerError } = await supabase
@@ -287,41 +283,6 @@ export const updateStore = async (updateStoreInput: UpdateStoreInput) => {
     throw new Error('Store with this email or phone number already exists');
   }
 
-  // Get Store Location Data
-  // const { data: storeData, error: fetchStoreError } = await supabase
-  //   .from('store_locations')
-  //   .select(
-  //     `
-  //     *,
-  //     store_employees (
-  //       id, user_id
-  //     )
-  //     `
-  //   )
-  //   .eq('id', storeId)
-  //   .maybeSingle();
-
-  // console.log('storeData', storeData);
-
-  // if (!storeData) throw new Error('Store not found');
-  // if (fetchStoreError) throw fetchStoreError;
-
-  // // Get store employee's user table id
-  // const store_employee_user_ids =
-  //   storeData?.store_employees.map((store_employee: any) => store_employee.user_id) || [];
-
-  // Update store employee's created_by_user_id and updated_by_user_id with the new owner's user table id
-  // if (store_owner_user_id && store_employee_user_ids && store_employee_user_ids.length > 0) {
-  //   const { error: storeEmployeeError } = await supabase
-  //     .from('users')
-  //     .update({
-  //       created_by_user_id: store_owner_user_id,
-  //       updated_by_user_id: store_owner_user_id,
-  //     })
-  //     .in('id', store_employee_user_ids);
-  //   if (storeEmployeeError) throw storeEmployeeError;
-  // }
-
   // Update store basic fields
   const { error: dbError } = await supabase
     .from('store_locations')
@@ -342,8 +303,6 @@ export const updateStore = async (updateStoreInput: UpdateStoreInput) => {
       lng,
       state_code,
       country_code,
-      updated_by_user_id: userProfile?.id,
-      updated_at: new Date().toISOString(),
     })
     .eq('id', storeId);
 

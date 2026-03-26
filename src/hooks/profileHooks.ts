@@ -58,10 +58,11 @@ export const useFetchUserProfile = () => {
 // * ====================== Update User Profile ====================== *
 const updateUser = async (userUpdateData: UpdateUserData, imageFile: File | null) => {
   let avatar_url: string | null = null;
-
+  console.log('userdata+++', userUpdateData);
   // --- Upload Image if Provided ---
   if (imageFile) {
     const uniqueId = nanoid();
+    console.log('uniqueId', uniqueId);
     const fileName = `profile/${uniqueId}-${imageFile.name}`;
     const { error: uploadImageError } = await supabase.storage
       .from('store-bucket')
@@ -84,11 +85,12 @@ const updateUser = async (userUpdateData: UpdateUserData, imageFile: File | null
 
   // --- Update Supabase Auth table ---
   const { authData, userTableData } = userUpdateData;
+  console.log('authData', authData);
 
   const updatePayload: Parameters<typeof supabase.auth.updateUser>[0] = {};
 
   if (authData?.email) updatePayload.email = authData.email;
-  if (authData?.phone) updatePayload.phone = authData.phone;
+  // if (authData?.phone) updatePayload.phone = authData.phone;
 
   const metadata = {
     ...(authData?.display_name && { display_name: authData.display_name }),
