@@ -25,6 +25,7 @@ import {
 import { useState } from 'react';
 import { useSidebar } from '@/components/ui/sidebar';
 import type { ActionMenuConfig } from '@/types/types';
+import { DataTablePagination } from './data-table-pagination-server-side';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -169,7 +170,7 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      {/* <DataTablePagination table={table} /> */}
+      <DataTablePagination table={table} />
     </div>
   );
 }
