@@ -3,13 +3,43 @@ import useAuthStore from '@/store/authStore';
 import { timeConverter } from '@/utils/time';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { validStoreLocation } from './generalHooks';
+import { generateRandomId } from '@/utils/strings';
+const unique_id = generateRandomId();
 
 type HelpTicketInput = {
   message: string | null;
   store_location_id: string | null;
 };
 
-// * ====================== Fetch All Genie Requests ====================== *
+const fetchSingleGenieRequest = async (ticketId: string) => {
+  const { data, error } = await supabase
+    .from('help_tickets')
+    .select(
+      `
+      *,
+      store_location:store_locations (
+        id, name
+      )
+      `
+    )
+    .eq('id', ticketId)
+    .maybeSingle(); // only for single data
+
+  const result = data;
+
+  if (error) throw error;
+  return result;
+};
+
+export const useFetchSingleGenieRequest = (ticketId: string) => {
+  return useQuery({
+    queryKey: ['help_ticket', ticketId],
+    queryFn: () => fetchSingleGenieRequest(ticketId),
+    staleTime: timeConverter(20, 'minute'),
+  });
+};
+
+//Fetch All Genie Requests
 const fetchAllGenieRequests = async () => {
   const { data, error } = await supabase
     .from('help_tickets')
@@ -40,43 +70,18 @@ export const useFetchAllGenieRequests = () => {
   });
 };
 
-// * ====================== Fetch Single Genie Requests ====================== *
-const fetchSingleGenieRequest = async (ticketId: string) => {
-  const { data, error } = await supabase
-    .from('help_tickets')
-    .select(
-      `
-      *,
-      store_location:store_locations (
-        id, name
-      )
-      `
-    )
-    .eq('id', ticketId)
-    .maybeSingle();
+// Create Help Ticket
 
-  const result = data;
-
-  if (error) throw error;
-  return result;
-};
-
-export const useFetchSingleGenieRequest = (ticketId: string) => {
-  return useQuery({
-    queryKey: ['help_ticket', ticketId],
-    queryFn: () => fetchSingleGenieRequest(ticketId),
-    staleTime: timeConverter(20, 'minute'),
-  });
-};
-
-// * ====================== Create Help Ticket ====================== *
 export const createHelpTicket = async (helpTicketData: HelpTicketInput) => {
   const triggerMail = import.meta.env.VITE_SEND_HELP_TICKET_MAIL;
 
   const { store_location_id, message } = helpTicketData;
+  console.log('store_location_id', store_location_id);
+  console.log('type:', typeof store_location_id);
 
   // ? ---------- Store Location Check -----------
-  const isValid = await validStoreLocation(store_location_id);
+  // const isValid = await validStoreLocation(store_location_id);
+  const isValid = await validStoreLocation(Number(store_location_id));
   if (!isValid) {
     throw new Error('Store location is not valid');
   }
@@ -86,10 +91,13 @@ export const createHelpTicket = async (helpTicketData: HelpTicketInput) => {
   const requester_name = userProfile?.name;
   const requester_email = userProfile?.email;
 
+  console.log('userProfile', userProfile);
+
   // Insert Data
   const { error: dbError, data: insertedData } = await supabase
     .from('help_tickets')
     .insert({
+      unique_id,
       requester_name,
       requester_email,
       message,

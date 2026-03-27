@@ -12,10 +12,9 @@ import { helpTicketSchema } from '@/validations/schemas';
 import confetti from 'canvas-confetti';
 import useAuthStore from '@/store/authStore';
 import FormikSelect from '@/components/reusables/formik/FormikSelect';
-import {
-  useFetchOwnerStoreLocations,
-  useFetchStoreLocationsForEmployee,
-} from '@/hooks/employeeManagementHooks';
+import {} from // useFetchOwnerStoreLocations,
+// useFetchStoreLocationsForEmployee,
+'@/hooks/employeeManagementHooks';
 import Spinner from '@/components/reusables/Spinner';
 import { useFetchAllStores } from '@/hooks/storeManagementHooks';
 
@@ -24,23 +23,11 @@ const ExpandingForm = () => {
   const userRole = userProfile?.role;
 
   const superAdminLocationsQuery = useFetchAllStores();
-  const ownerLocationsQuery = useFetchOwnerStoreLocations();
-  const managerLocationsQuery = useFetchStoreLocationsForEmployee();
-  const employeeLocationsQuery = useFetchStoreLocationsForEmployee();
 
   let locationsQuery: any;
   switch (userRole) {
     case 'superadmin':
       locationsQuery = superAdminLocationsQuery;
-      break;
-    case 'owner':
-      locationsQuery = ownerLocationsQuery;
-      break;
-    case 'manager':
-      locationsQuery = managerLocationsQuery;
-      break;
-    case 'employee':
-      locationsQuery = employeeLocationsQuery;
       break;
     default:
       locationsQuery = { data: [], isError: false, isLoading: false, error: null };
@@ -50,16 +37,12 @@ const ExpandingForm = () => {
   const error = locationsQuery?.error ?? null;
   const isLoading = locationsQuery?.isLoading ?? false;
 
-  // const locationOptions = allLocations?.map((location: any) => ({
-  //   label: location.name,
-  //   value: location.id,
-  // }));
-
   const locationOptions = useMemo(() => {
     const safeLocations = locationsQuery?.data ?? [];
     return safeLocations.map((location: any) => ({
       label: location.name,
-      value: location.id,
+      // value: location.id,
+      value: String(location.id),
     }));
   }, [locationsQuery?.data]);
 
@@ -90,7 +73,7 @@ const ExpandingForm = () => {
   const { mutate: createHelpTicketMutation, isPending } = useCreateHelpTicket();
 
   const initialValues: HelpButtonFormInitialValues = {
-    message: null,
+    message: '',
     store_location_id: null,
   };
 

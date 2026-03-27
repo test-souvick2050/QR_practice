@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { timeConverter } from '@/utils/time';
 import supabase from '@/configs/supabse';
-import useAuthStore from '@/store/authStore';
+// import useAuthStore from '@/store/authStore';
 import type { StoreOwner } from '@/types/types';
 import { generateRandomId } from '@/utils/strings';
 
