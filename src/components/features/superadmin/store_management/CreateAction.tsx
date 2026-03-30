@@ -125,7 +125,7 @@ const CreateAction = () => {
         setOpen={setOpen}
         title={creationOptions?.title}
         description={creationOptions?.description}
-        modalClass="big-modal"
+        // modalClass="big-modal"
       >
         {isOwnerFetchLoading ? (
           <div className="itemcenter flex justify-center">

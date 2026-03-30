@@ -43,7 +43,7 @@ const ViewAction = ({ row, text }: { row: StoreOwner; text?: string }) => {
         setOpen={setOpen}
         title={viewOptions?.title}
         description={viewOptions?.description}
-        modalClass="small-modal"
+        // modalClass="small-modal"
       >
         <>
           <div className="absolute top-5 right-11 flex items-center justify-end gap-2 sm:top-3 sm:right-15">

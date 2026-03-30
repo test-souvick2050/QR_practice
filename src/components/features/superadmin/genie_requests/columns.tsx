@@ -17,25 +17,25 @@ const columns: ColumnDef<any>[] = [
     enableSorting: false,
   },
 
-  {
-    id: 'unique_id',
-    accessorKey: 'unique_id',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Unique ID" />,
-    cell: ({ row }) => <ViewAction row={row.original} text={row.getValue('unique_id') || '----'} />,
-    enableSorting: false,
-  },
-
   // {
-  //   id: 'Requester Unique ID',
-  //   accessorFn: (row) => row.requested_by?.unique_id,
-  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Requester Unique ID" />,
-  //   cell: ({ row }) => (
-  //     <div>
-  //       {row.getValue('Requester Unique ID') ? row.getValue('Requester Unique ID') : '----'}
-  //     </div>
-  //   ),
+  //   id: 'unique_id',
+  //   accessorKey: 'unique_id',
+  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Unique ID" />,
+  //   cell: ({ row }) => <ViewAction row={row.original} text={row.getValue('unique_id') || '----'} />,
   //   enableSorting: false,
   // },
+
+  {
+    id: 'Requester Unique ID',
+    accessorFn: (row) => row.requested_by?.unique_id,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Requester Unique ID" />,
+    cell: ({ row }) => (
+      <div>
+        {row.getValue('Requester Unique ID') ? row.getValue('Requester Unique ID') : '----'}
+      </div>
+    ),
+    enableSorting: false,
+  },
   {
     id: 'Requester Email',
     accessorKey: 'requester_email',

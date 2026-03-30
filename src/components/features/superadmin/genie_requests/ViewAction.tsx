@@ -40,7 +40,8 @@ const ViewAction = ({ row, text }: { row: StoreOwner; text?: string }) => {
         setOpen={setOpen}
         title={viewOptions?.title}
         description={viewOptions?.description}
-        modalClass="small-modal"
+        // modalClass="small-modal"
+        // modalClass="max-w-sm"
       >
         <>
           {isSingleFetchLoading ? (

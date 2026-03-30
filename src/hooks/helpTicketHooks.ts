@@ -3,8 +3,8 @@ import useAuthStore from '@/store/authStore';
 import { timeConverter } from '@/utils/time';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { validStoreLocation } from './generalHooks';
-import { generateRandomId } from '@/utils/strings';
-const unique_id = generateRandomId();
+// import { generateRandomId } from '@/utils/strings';
+// const unique_id = generateRandomId();
 
 type HelpTicketInput = {
   message: string | null;
@@ -70,8 +70,7 @@ export const useFetchAllGenieRequests = () => {
   });
 };
 
-// Create Help Ticket
-
+// Create Help Ticket.
 export const createHelpTicket = async (helpTicketData: HelpTicketInput) => {
   const triggerMail = import.meta.env.VITE_SEND_HELP_TICKET_MAIL;
 
@@ -97,7 +96,7 @@ export const createHelpTicket = async (helpTicketData: HelpTicketInput) => {
   const { error: dbError, data: insertedData } = await supabase
     .from('help_tickets')
     .insert({
-      unique_id,
+      // unique_id,
       requester_name,
       requester_email,
       message,

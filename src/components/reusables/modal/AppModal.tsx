@@ -25,7 +25,7 @@ const AppModal = ({
   allowOutsideClick = false,
   open,
   setOpen,
-  modalClass = 'sm:max-w-4xl',
+  modalClass = 'sm:max-w-2xl',
 }: AppModalProps) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>

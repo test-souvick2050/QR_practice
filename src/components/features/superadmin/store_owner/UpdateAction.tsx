@@ -122,7 +122,7 @@ const UpdateAction = ({ row, setParentOpen }: { row: StoreOwner; setParentOpen: 
         setOpen={setOpen}
         title={updateOptions?.title}
         description={updateOptions?.description}
-        modalClass="big-modal"
+        // modalClass="big-modal"
       >
         {isSingleFetchLoading ? (
           <div className="itemcenter flex justify-center">

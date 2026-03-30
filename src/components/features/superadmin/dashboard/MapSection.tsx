@@ -37,7 +37,8 @@ const MapSection = () => {
   const locations = owners?.map((owner) => ({
     id: owner.id,
     name: owner.name,
-    position: { lat: owner.lat, lng: owner.lng },
+    // position: { lat: owner.lat, lng: owner.lng },
+    position: { lat: Number(owner.lat), lng: Number(owner.lng) },
     address: owner.address,
     email: owner.email,
     phone: owner.phone,

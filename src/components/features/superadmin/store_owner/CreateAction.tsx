@@ -106,7 +106,7 @@ const CreateAction = () => {
         setOpen={setOpen}
         title={creationOptions?.title}
         description={creationOptions?.description}
-        modalClass="big-modal"
+        // modalClass="big-modal"
       >
         <Formik
           initialValues={initialValues}

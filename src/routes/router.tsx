@@ -8,6 +8,7 @@ import ErrorPage from '../components/pages/ErrorPage';
 import FullPageSpinner from '@/components/reusables/FullPageSpinner';
 import DashboardPage from '@/components/pages/superadmin/DashboardPage';
 import SomethingWentWrong from '@/components/reusables/error/SomethingWentWrong';
+import ManufacturerPage from '@/components/pages/superadmin/ManufacturerPage';
 
 const StoreManagementPage = lazy(() => import('@/components/pages/superadmin/StoreManagementPage'));
 const NotificationsAlertsPage = lazy(
@@ -70,11 +71,11 @@ const router = createBrowserRouter([
                     Component: StoreManagementPage,
                     errorElement: <SomethingWentWrong />,
                   },
-                  // {
-                  //   path: 'manufacturers',
-                  //   Component: ManufacturerPage,
-                  //   errorElement: <SomethingWentWrong />,
-                  // },
+                  {
+                    path: 'manufacturers',
+                    Component: ManufacturerPage,
+                    errorElement: <SomethingWentWrong />,
+                  },
                 ],
               },
               {
