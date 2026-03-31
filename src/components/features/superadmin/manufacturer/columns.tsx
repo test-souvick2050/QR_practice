@@ -17,14 +17,14 @@ const columns: ColumnDef<any>[] = [
     accessorKey: 'sftp_host',
     header: ({ column }) => <DataTableColumnHeader column={column} title="SFTP Host" />,
     cell: ({ row }) => <div>{row.getValue('SFTP Host') ? row.getValue('SFTP Host') : '----'}</div>,
-    enableSorting: true,
+    enableSorting: false,
   },
   {
     id: 'SFTP Port',
     accessorKey: 'sftp_port',
     header: ({ column }) => <DataTableColumnHeader column={column} title="SFTP Port" />,
     cell: ({ row }) => <div>{row.getValue('SFTP Port') ? row.getValue('SFTP Port') : '----'}</div>,
-    enableSorting: true,
+    enableSorting: false,
   },
   {
     id: 'SFTP Username',
@@ -33,7 +33,7 @@ const columns: ColumnDef<any>[] = [
     cell: ({ row }) => (
       <div>{row.getValue('SFTP Username') ? row.getValue('SFTP Username') : '----'}</div>
     ),
-    enableSorting: true,
+    enableSorting: false,
   },
   {
     id: 'SFTP Location',
@@ -42,7 +42,7 @@ const columns: ColumnDef<any>[] = [
     cell: ({ row }) => (
       <div>{row.getValue('SFTP Location') ? row.getValue('SFTP Location') : '----'}</div>
     ),
-    enableSorting: true,
+    enableSorting: false,
   },
   {
     id: 'Auth Type',
@@ -52,7 +52,7 @@ const columns: ColumnDef<any>[] = [
       const value = row.getValue('Auth Type');
       return <div>{value ? (value == 'ssh_key' ? 'SSH Key' : 'Password') : '----'}</div>;
     },
-    enableSorting: true,
+    enableSorting: false,
   },
   {
     id: 'Store Location',
@@ -63,22 +63,8 @@ const columns: ColumnDef<any>[] = [
         {row.getValue('Store Location') ? <Chip label={row.getValue('Store Location')} /> : '----'}
       </div>
     ),
-    enableSorting: true,
+    enableSorting: false,
   },
-  // {
-  //   id: 'actions',
-  //   header: () => <div>Action</div>,
-  //   cell: ({ row }) => {
-  //     return (
-  //       <div className="flex items-center gap-2">
-  //         {showViewButton && <ViewAction row={row.original} />}
-  //         {showEditButton && <UpdateAction row={row.original} />}
-  //         {showDeleteButton && <DeleteAction row={row.original} />}
-  //       </div>
-  //     );
-  //   },
-  //   enableSorting: false,
-  // },
 ];
 
 export default columns;

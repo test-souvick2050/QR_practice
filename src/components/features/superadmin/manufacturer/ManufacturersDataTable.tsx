@@ -9,6 +9,7 @@ import { useFetchAllManufacturers } from '@/hooks/manufacturerHooks';
 const ManufacturersDataTable = () => {
   const { data, isError, error } = useFetchAllManufacturers();
   const content = data ?? [];
+  console.log('data++++++++++++++++', data);
 
   useEffect(() => {
     if (isError) {

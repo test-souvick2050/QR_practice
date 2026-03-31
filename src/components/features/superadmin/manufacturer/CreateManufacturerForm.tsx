@@ -193,3 +193,140 @@
 // };
 
 // export default CreateManufacturerForm;
+
+import { Form, useFormikContext } from 'formik';
+import { useEffect } from 'react';
+import FormikInput from '@/components/reusables/formik/FormikInput';
+import FormikSelect from '@/components/reusables/formik/FormikSelect';
+import { Button } from '@/components/ui/button';
+import type { CreateManufacturerFormInitialValues } from '@/types/types';
+import RowGrid from '@/components/reusables/dashboard/RowGrid';
+
+const CreateManufacturerForm = ({
+  isPending,
+  storeLocationOptions,
+}: {
+  isPending: boolean;
+  storeLocationOptions: { label: any; value: any }[] | undefined;
+}) => {
+  const { isSubmitting, values, setFieldValue } =
+    useFormikContext<CreateManufacturerFormInitialValues>();
+
+  useEffect(() => {
+    if (values.sftp_auth_type === 'password') {
+      setFieldValue('sftp_ssh_key_file', null);
+    } else if (values.sftp_auth_type === 'ssh_key') {
+      setFieldValue('sftp_password', '');
+    }
+  }, [values.sftp_auth_type, setFieldValue]);
+
+  return (
+    <Form className="auth-form mt-0">
+      <RowGrid className="gap-y-0">
+        <div className="col">
+          <FormikSelect
+            name="connection_type"
+            label="Connection Type"
+            placeholder="Select the type"
+            required
+            options={[
+              { label: 'FTP', value: 'ftp' },
+              { label: 'SFTP', value: 'sftp' },
+            ]}
+          />
+        </div>
+
+        <div className="col">
+          <FormikInput
+            type="text"
+            name="name"
+            label="Manufacturer Name"
+            placeholder="Enter the Manufacturer Name"
+            required
+          />
+        </div>
+
+        <div className="col">
+          <FormikInput
+            type="text"
+            name="sftp_host"
+            label="Host"
+            placeholder="Enter the Host"
+            required
+          />
+        </div>
+
+        <div className="col">
+          <FormikInput
+            type="number"
+            name="sftp_port"
+            label="Port"
+            placeholder="Enter the Port"
+            required
+          />
+        </div>
+
+        <div className="col">
+          <FormikInput
+            type="text"
+            name="sftp_location"
+            label="File Location"
+            placeholder="Enter the File Location"
+            required
+          />
+        </div>
+
+        <div className="col">
+          <FormikInput
+            type="text"
+            name="sftp_username"
+            label="Username"
+            placeholder="Enter the Username"
+            required
+          />
+        </div>
+
+        <div className="col">
+          <FormikSelect
+            name="sftp_auth_type"
+            label="Auth Type"
+            placeholder="Select the type"
+            required
+            options={[
+              { label: 'Password', value: 'password' },
+              { label: 'SSH Key', value: 'ssh_key' },
+            ]}
+          />
+        </div>
+
+        <div className="col">
+          <FormikInput
+            type="password"
+            name="sftp_password"
+            label="Password"
+            placeholder="Enter the Password"
+            required
+            hasEyeIcon
+          />
+        </div>
+
+        <div className="col">
+          <FormikSelect
+            name="store_location_id"
+            label="Store Location"
+            placeholder="Select Store Location"
+            options={storeLocationOptions}
+          />
+        </div>
+      </RowGrid>
+
+      <div className="button-wrap flex justify-center text-center">
+        <Button type="submit" disabled={isSubmitting || isPending} className="block">
+          {isSubmitting || isPending ? 'Adding...' : 'Add Manufacturer'}
+        </Button>
+      </div>
+    </Form>
+  );
+};
+
+export default CreateManufacturerForm;

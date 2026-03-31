@@ -75,8 +75,6 @@ export const createHelpTicket = async (helpTicketData: HelpTicketInput) => {
   const triggerMail = import.meta.env.VITE_SEND_HELP_TICKET_MAIL;
 
   const { store_location_id, message } = helpTicketData;
-  console.log('store_location_id', store_location_id);
-  console.log('type:', typeof store_location_id);
 
   // ? ---------- Store Location Check -----------
   // const isValid = await validStoreLocation(store_location_id);

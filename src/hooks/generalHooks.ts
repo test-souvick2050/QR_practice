@@ -19,8 +19,6 @@ export const getStoreLocations = async () => {
   }
 };
 
-console.log('role:', useAuthStore.getState().userProfile?.role);
-
 const superAdminStoreLocations = async () => {
   const { data, error } = await supabase.from('store_locations').select('*').eq('status', 'active');
 
@@ -111,16 +109,12 @@ const superAdminStoreLocations = async () => {
 export const validStoreLocation = async (store_location_id: any) => {
   const storeLocations: any = await getStoreLocations();
 
-  console.log('storeLocations:', storeLocations); // ← add this
-  console.log('storeLocations length:', storeLocations.length);
-
   // const findStoreLocation = storeLocations.find(
   //   (location: any) => String(location.id) === String(store_location_id)
   // );
   const findStoreLocation = storeLocations.find(
     (location: any) => Number(location.id) === Number(store_location_id)
   );
-  console.log('findStoreLocation:', findStoreLocation); // found or undefined?
 
   if (!findStoreLocation || findStoreLocation.status !== 'active') {
     return false;

@@ -65,33 +65,6 @@ const columns: ColumnDef<any>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: 'manufacturers',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Manufacturer" />,
-    cell: ({ row }) => {
-      const manufacturers = row.getValue('manufacturers') as any[];
-
-      return (
-        <div className="flex flex-col gap-1">
-          {manufacturers?.length > 0 ? (
-            <>
-              <div className="flex flex-wrap gap-2">
-                {manufacturers.map((m) => (
-                  <div className="flex items-center justify-center" key={m.id}>
-                    <Chip label={m.name} />
-                  </div>
-                ))}
-              </div>
-            </>
-          ) : (
-            '----'
-          )}
-        </div>
-      );
-    },
-    enableSorting: false,
-  },
-
-  {
     accessorKey: 'status',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
     cell: ({ row }) => {
@@ -108,20 +81,6 @@ const columns: ColumnDef<any>[] = [
     },
     enableSorting: false,
   },
-  // {
-  //   id: 'actions',
-  //   header: () => <div>Action</div>,
-  //   cell: ({ row }) => {
-  //     return (
-  //       <div className="flex items-center gap-2">
-  //         {showViewButton && <ViewAction row={row.original} />}
-  //         {showEditButton && <UpdateAction row={row.original} />}
-  //         {showDeleteButton && <DeleteAction row={row.original} />}
-  //       </div>
-  //     );
-  //   },
-  //   enableSorting: false,
-  // },
 ];
 
 export default columns;

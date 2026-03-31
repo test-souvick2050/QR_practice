@@ -10,13 +10,13 @@ import {
   useDecryptManufacturerPasswordMutation,
   useFetchSingleManufacturer,
 } from '@/hooks/manufacturerHooks';
-// import DeleteAction from './DeleteAction';
-// import UpdateAction from './UpdateAction';
+import DeleteAction from './DeleteAction';
+import UpdateAction from './UpdateAction';
 
 const ViewAction = ({ row, text }: { row: any; text?: string }) => {
   const { viewOptions } = actionMenuItems;
   const [open, setOpen] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
 
   const {
     data: manufacturerData,
@@ -25,7 +25,7 @@ const ViewAction = ({ row, text }: { row: any; text?: string }) => {
   } = useFetchSingleManufacturer(row.id);
 
   const {
-    mutate: decryptPassword,
+    // mutate: decryptPassword,
     data: decryptedPassword,
     isPending: isDecrypting,
     error: decryptError,
@@ -36,10 +36,15 @@ const ViewAction = ({ row, text }: { row: any; text?: string }) => {
     setShowPassword(false);
   };
 
-  const handleRevealPassword = () => {
-    if (!showPassword) {
-      decryptPassword(row.id);
-    }
+  // const handleRevealPassword = () => {
+  //   if (!showPassword) {
+  //     decryptPassword(row.id);
+  //   }
+  //   setShowPassword((prev) => !prev);
+  // };
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleTogglePassword = () => {
     setShowPassword((prev) => !prev);
   };
 
@@ -60,12 +65,12 @@ const ViewAction = ({ row, text }: { row: any; text?: string }) => {
         setOpen={setOpen}
         title={viewOptions?.title}
         description={viewOptions?.description}
-        modalClass="small-modal"
+        // modalClass="small-modal"
       >
         <>
           <div className="absolute top-5 right-11 flex items-center justify-end gap-2 sm:top-3 sm:right-15">
-            {/* <DeleteAction row={row} />
-            <UpdateAction row={row} setParentOpen={setOpen} /> */}
+            <DeleteAction row={row} />
+            <UpdateAction row={row} setParentOpen={setOpen} />
           </div>
 
           {isManufacturerLoading ? (
@@ -110,27 +115,32 @@ const ViewAction = ({ row, text }: { row: any; text?: string }) => {
                       ) : showPassword && decryptedPassword ? (
                         <p className="font-semibold">{decryptedPassword}</p>
                       ) : (
-                        <p className="font-semibold">••••••••••</p>
+                        <p className="font-semibold"></p>
                       )}
-
                       {manufacturerData?.sftp_password && (
-                        <button
-                          type="button"
-                          className="text-primary flex cursor-pointer items-center space-x-1 text-sm font-medium hover:underline"
-                          onClick={handleRevealPassword}
-                        >
-                          {showPassword && decryptedPassword ? (
-                            <>
-                              <span>Hide</span>
-                              <EyeOff size={18} />
-                            </>
-                          ) : (
-                            <>
-                              <span>Reveal</span>
-                              <Eye size={18} />
-                            </>
-                          )}
-                        </button>
+                        <div className="flex items-center space-x-2">
+                          <span className="text-sm">
+                            {showPassword ? manufacturerData.sftp_password : '••••••••'}
+                          </span>
+
+                          <button
+                            type="button"
+                            className="text-primary flex cursor-pointer items-center space-x-1 text-sm font-medium hover:underline"
+                            onClick={handleTogglePassword}
+                          >
+                            {showPassword ? (
+                              <>
+                                {/* <span>Hide</span> */}
+                                <EyeOff size={18} />
+                              </>
+                            ) : (
+                              <>
+                                {/* <span>Reveal</span> */}
+                                <Eye size={18} />
+                              </>
+                            )}
+                          </button>
+                        </div>
                       )}
                     </div>
                   </div>

@@ -50,9 +50,7 @@ const fetchAllManufacturers = async () => {
     .select(
       `
       *,
-      store_location:store_locations(
-        id, name
-      )
+    store_location:store_locations(id, name)
     `
     )
     .order('created_at', { ascending: false });
@@ -107,11 +105,100 @@ const encryptPassword = async (plainPassword: string) => {
 };
 
 // * ====================== Create Manufacturer ====================== *
-const createManufacturer = async (
-  manufacturerData: CreateManufacturerInput,
-  sftp_ssh_key_file: File | null
-) => {
-  const userProfile = useAuthStore.getState().userProfile;
+// const createManufacturer = async (
+//   manufacturerData: CreateManufacturerInput,
+//   sftp_ssh_key_file: File | null
+// ) => {
+//   const userProfile = useAuthStore.getState().userProfile;
+//   console.log('userProfile>>>>>>>>', userProfile);
+//   console.log('manufacturerData>>>>>>>>', manufacturerData);
+//   const {
+//     connection_type,
+//     name,
+//     sftp_host,
+//     sftp_port,
+//     sftp_location,
+//     sftp_username,
+//     sftp_auth_type,
+//     sftp_password,
+//   } = manufacturerData;
+
+//   // find the store location
+
+//   const store_location_id = manufacturerData.store_location_id
+//     ? manufacturerData.store_location_id
+//     : null;
+
+//   let encryptedPassword: string | null = null;
+//   let iv: string | null = null;
+
+//   if (sftp_auth_type === 'password' && sftp_password) {
+//     const encrypted = await encryptPassword(sftp_password);
+//     encryptedPassword = encrypted.encryptedPassword;
+//     iv = encrypted.iv;
+//   }
+
+//   let sftp_ssh_key_file_url: string | null = null;
+
+//   if (sftp_auth_type === 'ssh_key' && sftp_ssh_key_file) {
+//     const filePath = `ssh-keys/${Date.now()}-${sftp_ssh_key_file.name}`;
+//     const { error: uploadError } = await supabase.storage
+//       .from('store-bucket')
+//       .upload(filePath, sftp_ssh_key_file);
+
+//     if (uploadError) {
+//       throw uploadError;
+//     }
+
+//     const { data: publicUrl } = supabase.storage.from('store-bucket').getPublicUrl(filePath);
+//     console.log('publicUrl', publicUrl);
+
+//     sftp_ssh_key_file_url = publicUrl?.publicUrl || null;
+//   }
+
+//   const { data, error } = await supabase.from('manufacturers').insert({
+//     store_location_id,
+//     connection_type,
+//     name,
+//     sftp_host,
+//     sftp_port,
+//     sftp_location,
+//     sftp_username,
+//     sftp_auth_type,
+//     sftp_password: encryptedPassword,
+//     sftp_password_iv: iv,
+//     sftp_ssh_key_file_url,
+//     created_by_user_id: userProfile?.id,
+//     updated_by_user_id: userProfile?.id,
+//   });
+
+//   if (error) {
+//     throw error;
+//   }
+
+//   return { success: true, data };
+// };
+
+// export const useCreateManufacturer = () => {
+//   const queryClient = useQueryClient();
+
+//   return useMutation({
+//     mutationFn: ({
+//       manufacturerData,
+//       sftp_ssh_key_file,
+//     }: {
+//       manufacturerData: CreateManufacturerInput;
+//       sftp_ssh_key_file: File | null;
+//     }) => createManufacturer(manufacturerData, sftp_ssh_key_file),
+//     onSuccess: () => {
+//       queryClient.invalidateQueries({ queryKey: ['manufacturers'], exact: false });
+//       queryClient.invalidateQueries({ queryKey: ['stores'], exact: false });
+//     },
+//   });
+// };
+
+//create manufacture new
+const createManufacturer = async (manufacturerData: CreateManufacturerInput) => {
   const {
     connection_type,
     name,
@@ -121,40 +208,10 @@ const createManufacturer = async (
     sftp_username,
     sftp_auth_type,
     sftp_password,
+    store_location_id,
   } = manufacturerData;
 
-  const store_location_id = manufacturerData.store_location_id
-    ? manufacturerData.store_location_id
-    : null;
-
-  let encryptedPassword: string | null = null;
-  let iv: string | null = null;
-
-  if (sftp_auth_type === 'password' && sftp_password) {
-    const encrypted = await encryptPassword(sftp_password);
-    encryptedPassword = encrypted.encryptedPassword;
-    iv = encrypted.iv;
-  }
-
-  let sftp_ssh_key_file_url: string | null = null;
-
-  if (sftp_auth_type === 'ssh_key' && sftp_ssh_key_file) {
-    const filePath = `ssh-keys/${Date.now()}-${sftp_ssh_key_file.name}`;
-    const { error: uploadError } = await supabase.storage
-      .from('store-bucket')
-      .upload(filePath, sftp_ssh_key_file);
-
-    if (uploadError) {
-      throw uploadError;
-    }
-
-    const { data: publicUrl } = supabase.storage.from('store-bucket').getPublicUrl(filePath);
-
-    sftp_ssh_key_file_url = publicUrl?.publicUrl || null;
-  }
-
   const { data, error } = await supabase.from('manufacturers').insert({
-    store_location_id,
     connection_type,
     name,
     sftp_host,
@@ -162,17 +219,11 @@ const createManufacturer = async (
     sftp_location,
     sftp_username,
     sftp_auth_type,
-    sftp_password: encryptedPassword,
-    sftp_password_iv: iv,
-    sftp_ssh_key_file_url,
-    created_by_user_id: userProfile?.id,
-    updated_by_user_id: userProfile?.id,
+    sftp_password,
+    store_location_id: store_location_id || null,
   });
 
-  if (error) {
-    throw error;
-  }
-
+  if (error) throw error;
   return { success: true, data };
 };
 
@@ -180,16 +231,9 @@ export const useCreateManufacturer = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      manufacturerData,
-      sftp_ssh_key_file,
-    }: {
-      manufacturerData: CreateManufacturerInput;
-      sftp_ssh_key_file: File | null;
-    }) => createManufacturer(manufacturerData, sftp_ssh_key_file),
+    mutationFn: (manufacturerData: CreateManufacturerInput) => createManufacturer(manufacturerData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['manufacturers'], exact: false });
-      queryClient.invalidateQueries({ queryKey: ['stores'], exact: false });
     },
   });
 };
