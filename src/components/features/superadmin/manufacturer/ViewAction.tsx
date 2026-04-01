@@ -6,10 +6,7 @@ import Spinner from '@/components/reusables/Spinner';
 
 import actionMenuItems from './customizer';
 import { Chip } from '@/components/reusables/dashboard/Chip';
-import {
-  useDecryptManufacturerPasswordMutation,
-  useFetchSingleManufacturer,
-} from '@/hooks/manufacturerHooks';
+import { useFetchSingleManufacturer } from '@/hooks/manufacturerHooks';
 import DeleteAction from './DeleteAction';
 import UpdateAction from './UpdateAction';
 
@@ -23,13 +20,6 @@ const ViewAction = ({ row, text }: { row: any; text?: string }) => {
     isLoading: isManufacturerLoading,
     error: manufacturerError,
   } = useFetchSingleManufacturer(row.id);
-
-  const {
-    // mutate: decryptPassword,
-    data: decryptedPassword,
-    isPending: isDecrypting,
-    error: decryptError,
-  } = useDecryptManufacturerPasswordMutation();
 
   const handleModalOpen = () => {
     setOpen(true);
@@ -108,15 +98,6 @@ const ViewAction = ({ row, text }: { row: any; text?: string }) => {
                   <div className="flex items-center justify-between">
                     <p className="w-1/2 text-gray-600">SFTP Password:</p>
                     <div className="flex w-2/4 items-center justify-end space-x-2">
-                      {isDecrypting ? (
-                        <p className="text-xs">Fetching...</p>
-                      ) : decryptError ? (
-                        <p className="text-sm text-red-500">Error</p>
-                      ) : showPassword && decryptedPassword ? (
-                        <p className="font-semibold">{decryptedPassword}</p>
-                      ) : (
-                        <p className="font-semibold"></p>
-                      )}
                       {manufacturerData?.sftp_password && (
                         <div className="flex items-center space-x-2">
                           <span className="text-sm">

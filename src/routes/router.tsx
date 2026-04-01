@@ -11,9 +11,7 @@ import SomethingWentWrong from '@/components/reusables/error/SomethingWentWrong'
 import ManufacturerPage from '@/components/pages/superadmin/ManufacturerPage';
 
 const StoreManagementPage = lazy(() => import('@/components/pages/superadmin/StoreManagementPage'));
-const NotificationsAlertsPage = lazy(
-  () => import('@/components/pages/superadmin/NotificationsAlerts')
-);
+
 const GenieRequestsPage = lazy(() => import('@/components/pages/superadmin/GenieRequestsPage'));
 const LoginPage = lazy(() => import('@/components/pages/LoginPage'));
 const ProfilePage = lazy(() => import('@/components/pages/superadmin/ProfilePage'));
@@ -78,11 +76,7 @@ const router = createBrowserRouter([
                   },
                 ],
               },
-              {
-                path: 'alerts',
-                Component: NotificationsAlertsPage,
-                errorElement: <SomethingWentWrong />,
-              },
+
               {
                 path: 'genie-requests',
                 Component: GenieRequestsPage,

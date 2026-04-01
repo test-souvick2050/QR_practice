@@ -1,5 +1,5 @@
 import supabase from '@/configs/supabse';
-import useAuthStore from '@/store/authStore';
+// import useAuthStore from '@/store/authStore';
 import { timeConverter } from '@/utils/time';
 import { useQuery } from '@tanstack/react-query';
 

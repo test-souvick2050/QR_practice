@@ -57,7 +57,8 @@ const UpdateAction = ({ row, setParentOpen }: { row: Manufacturer; setParentOpen
     sftp_location: manufacturerData?.sftp_location ?? '',
     sftp_username: manufacturerData?.sftp_username ?? '',
     sftp_auth_type: manufacturerData?.sftp_auth_type ?? 'password',
-    sftp_password: '',
+    // sftp_password: '',
+    sftp_password: manufacturerData?.sftp_password ?? '',
     sftp_ssh_key_file: null,
     store_location_id: manufacturerData?.store_location_id ?? '',
   };

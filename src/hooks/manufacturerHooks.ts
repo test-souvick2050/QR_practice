@@ -296,35 +296,35 @@ export const useDeleteManufacturer = () => {
 };
 
 // * ====================== Fetch Manufacturer Password ====================== *
-export const useDecryptManufacturerPasswordMutation = () => {
-  return useMutation({
-    mutationFn: async (manufacturerId: string): Promise<string> => {
-      const { data: manufacturerData, error: fetchError } = await supabase
-        .from('manufacturers')
-        .select('sftp_password, sftp_password_iv')
-        .eq('id', manufacturerId)
-        .maybeSingle();
+// export const useDecryptManufacturerPasswordMutation = () => {
+//   return useMutation({
+//     mutationFn: async (manufacturerId: string): Promise<string> => {
+//       const { data: manufacturerData, error: fetchError } = await supabase
+//         .from('manufacturers')
+//         .select('sftp_password, sftp_password_iv')
+//         .eq('id', manufacturerId)
+//         .maybeSingle();
 
-      if (fetchError || !manufacturerData) {
-        throw new Error(fetchError?.message || 'Failed to fetch manufacturer');
-      }
+//       if (fetchError || !manufacturerData) {
+//         throw new Error(fetchError?.message || 'Failed to fetch manufacturer');
+//       }
 
-      const { data, error: decryptError } =
-        await supabase.functions.invoke<DecryptPasswordResponse>('decrypt-password', {
-          body: {
-            encryptedPassword: manufacturerData.sftp_password,
-            iv: manufacturerData.sftp_password_iv,
-          },
-        });
+//       const { data, error: decryptError } =
+//         await supabase.functions.invoke<DecryptPasswordResponse>('decrypt-password', {
+//           body: {
+//             encryptedPassword: manufacturerData.sftp_password,
+//             iv: manufacturerData.sftp_password_iv,
+//           },
+//         });
 
-      if (decryptError || !data?.plain) {
-        throw new Error(decryptError?.message || 'Decryption failed');
-      }
+//       if (decryptError || !data?.plain) {
+//         throw new Error(decryptError?.message || 'Decryption failed');
+//       }
 
-      return data.plain;
-    },
-  });
-};
+//       return data.plain;
+//     },
+//   });
+// };
 
 // * ====================== Update Manufacturer ====================== *
 const updateManufacturer = async (
