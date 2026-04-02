@@ -23,7 +23,6 @@ const UpdateAction = ({ row, setParentOpen }: { row: Manufacturer; setParentOpen
     setOpen(true);
   };
 
-  // ? Manufacturer Details Fetching
   const {
     isError: isSingleFetchError,
     error: singleFetchError,
@@ -31,7 +30,6 @@ const UpdateAction = ({ row, setParentOpen }: { row: Manufacturer; setParentOpen
     isLoading: isSingleFetchLoading,
   } = useFetchSingleManufacturer(row.id);
 
-  // ? all active store locations fetching
   const {
     isError: isStoreLocationFetchError,
     error: storeLocationFetchError,
@@ -60,13 +58,16 @@ const UpdateAction = ({ row, setParentOpen }: { row: Manufacturer; setParentOpen
     // sftp_password: '',
     sftp_password: manufacturerData?.sftp_password ?? '',
     sftp_ssh_key_file: null,
-    store_location_id: manufacturerData?.store_location_id ?? '',
+    store_location_id: manufacturerData?.store_location?.id
+      ? manufacturerData.store_location.id.toString()
+      : '__none',
   };
 
   const onSubmit = async (
     values: UpdateManufacturerFormInitialValues,
     formik: FormikHelpers<UpdateManufacturerFormInitialValues>
   ) => {
+    console.log('values>>>>>', values);
     const connection_type = values.connection_type ? values.connection_type.trim() : '';
     const name = values.name ? values.name.trim() : '';
     const sftp_host = values.sftp_host ? values.sftp_host.trim() : '';
